@@ -52,7 +52,7 @@ public class GUIVendedor extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jTextField8 = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastrar Vendedor");
         setFont(new java.awt.Font("Aharoni", 1, 10)); // NOI18N
 

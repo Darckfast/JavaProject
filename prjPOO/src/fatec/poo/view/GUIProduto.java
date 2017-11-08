@@ -43,7 +43,7 @@ public class GUIProduto extends javax.swing.JFrame {
         txtPrecoUni = new javax.swing.JTextField();
         txtEstoque = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro de Produto");
 
         lblCodigo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
