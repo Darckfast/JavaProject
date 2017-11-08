@@ -7,7 +7,7 @@ package fatec.poo.view;
 
 /**
  *
- * @author 0030481611017
+ * @author Victor, Kevin and Gabriel
  */
 public class GUIVendedor extends javax.swing.JFrame {
 

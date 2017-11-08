@@ -7,7 +7,7 @@ package fatec.poo.view;
 
 /**
  *
- * @author root
+  * @author Victor, Kevin and Gabriel
  */
 public class GUICliente extends javax.swing.JFrame {
 
