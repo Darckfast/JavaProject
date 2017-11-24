@@ -5,23 +5,23 @@ import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 
-import fatec.poo.model.Cliente;
+import fatec.poo.model.Vendedor;
 
-public class DaoCliente {
+public class DaoVendedor {
 
     private Connection conn;
     
-    public DaoCliente(Connection conn) {
+    public DaoVendedor(Connection conn) {
          this.conn = conn;
     }
     
-    public void inserir(Cliente cliente) {
+    public void inserir(Vendedor vendedor) {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("INSERT INTO tbcliente(cpf, nome, limiteCred) VALUES(?,?,?)");
-            ps.setString(1, cliente.getCpf());
-            ps.setString(2, cliente.getNome());
-            ps.setString(3, String.valueOf(cliente.getLimiteCred()));
+            ps = conn.prepareStatement("INSERT INTO tbvendedor(cpf, nome, salarioBase) VALUES(?,?,?)");
+            ps.setString(1, vendedor.getCpf());
+            ps.setString(2, vendedor.getNome());
+            ps.setString(3, String.valueOf(vendedor.getSalarioBase()));
                       
             ps.execute();
         } catch (SQLException ex) {
@@ -29,15 +29,15 @@ public class DaoCliente {
         }
     }
     
-    public void alterar(Cliente cliente) {
+    public void alterar(Vendedor vendedor) {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("UPDATE tbcliente set nome = ? " +
+            ps = conn.prepareStatement("UPDATE tbvendedor set nome = ? " +
                                                  "where cpf = ?");
             
-            ps.setString(1, cliente.getCpf());
-            ps.setString(2, cliente.getNome());
-            ps.setString(3, String.valueOf(cliente.getLimiteCred()));
+            ps.setString(1, vendedor.getCpf());
+            ps.setString(2, vendedor.getNome());
+            ps.setString(3, String.valueOf(vendedor.getSalarioBase()));
            
             ps.execute();
         } catch (SQLException ex) {
@@ -45,19 +45,19 @@ public class DaoCliente {
         }
     }
         
-     public  Cliente consultar (String cpf) {
-        Cliente d = null;
+     public  Vendedor consultar (String cpf) {
+        Vendedor d = null;
        
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("SELECT * from tbcliente where " +
+            ps = conn.prepareStatement("SELECT * from tbvendedor where " +
                                                  "cpf = ?");
             
             ps.setString(1, cpf);
             ResultSet rs = ps.executeQuery();
            
             if (rs.next() == true) {
-                d = new Cliente (cpf, rs.getString("nome"), rs.getDouble("limiteCred"));
+                d = new Vendedor (cpf, rs.getString("nome"), rs.getDouble("salarioBase"));
             }
         }
         catch (SQLException ex) { 
@@ -66,12 +66,12 @@ public class DaoCliente {
         return (d);
     }    
      
-     public void excluir(Cliente cliente) {
+     public void excluir(Vendedor vendedor) {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("DELETE FROM tbcliente where cpf = ?");
+            ps = conn.prepareStatement("DELETE FROM tbvendedor where cpf = ?");
             
-            ps.setString(1, cliente.getCpf());
+            ps.setString(1, vendedor.getCpf());
                       
             ps.execute();
         } catch (SQLException ex) {
