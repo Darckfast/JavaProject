@@ -40,13 +40,28 @@ public class DaoCliente {
     public void alterar(Cliente cliente) {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("UPDATE tbcliente set nome = ? " + "limiteCred = ?" + "limiteDisp = ?" +
-                                                 "where cpf = ?");
+            ps = conn.prepareStatement("UPDATE tbcliente set nome = ?" +
+                                                            "limiteCred = ?" +
+                                                            "limiteDisp = ?" +
+                                                            "endereco = ?" +
+                                                            "cidade = ?" +
+                                                            "cep = ?" +
+                                                            "uf = ?" +
+                                                            "ddd = ?" +
+                                                            "telefone= ?" +
+                                                            "where cpf = ?");
             
             ps.setString(1, cliente.getCpf());
             ps.setString(2, cliente.getNome());
             ps.setString(3, String.valueOf(cliente.getLimiteCred()));
             ps.setString(4, String.valueOf(cliente.getLimiteDisp()));
+            ps.setString(5, cliente.getEndereco());
+            ps.setString(6, cliente.getCidade());
+            ps.setString(7, cliente.getCep());
+            ps.setString(8, cliente.getUf());
+            ps.setString(9, cliente.getDdd());
+            ps.setString(10, cliente.getTelefone());
+           
 
             ps.execute();
         } catch (SQLException ex) {
