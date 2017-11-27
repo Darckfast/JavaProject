@@ -7,6 +7,9 @@ package fatec.poo.view;
 
 import fatec.poo.control.Conexao;
 import fatec.poo.control.DaoCliente;
+import fatec.poo.functions.CPF;
+import fatec.poo.model.Cliente;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -53,7 +56,7 @@ public class GUICliente extends javax.swing.JFrame {
         btnAlterar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         btnSair = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cmbUf = new javax.swing.JComboBox<>();
         lblLimiteDisp = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -65,10 +68,11 @@ public class GUICliente extends javax.swing.JFrame {
         });
 
         try {
-            txtCpf.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###.-##")));
+            txtCpf.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        txtCpf.setText("   .   .   -  ");
         txtCpf.setToolTipText("");
 
         lblCpf.setText("CPF");
@@ -105,14 +109,29 @@ public class GUICliente extends javax.swing.JFrame {
 
         btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/pesq.png"))); // NOI18N
         btnConsultar.setText("Consultar");
+        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarActionPerformed(evt);
+            }
+        });
 
         btnIncluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/add.png"))); // NOI18N
         btnIncluir.setText("Incluir");
         btnIncluir.setEnabled(false);
+        btnIncluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIncluirActionPerformed(evt);
+            }
+        });
 
         btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Alterar.png"))); // NOI18N
         btnAlterar.setText("Alterar");
         btnAlterar.setEnabled(false);
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Eraser.png"))); // NOI18N
         btnExcluir.setText("Excluir");
@@ -120,9 +139,14 @@ public class GUICliente extends javax.swing.JFrame {
 
         btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/exit.png"))); // NOI18N
         btnSair.setText("Sair");
+        btnSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSairActionPerformed(evt);
+            }
+        });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
-        jComboBox1.setEnabled(false);
+        cmbUf.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SP", "RJ" }));
+        cmbUf.setEnabled(false);
 
         lblLimiteDisp.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -147,7 +171,7 @@ public class GUICliente extends javax.swing.JFrame {
                                 .addComponent(lblLimiteDisponivel)
                                 .addGap(18, 18, 18)
                                 .addComponent(lblLimiteDisp, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 57, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(lblTelefone, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -165,7 +189,7 @@ public class GUICliente extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(lblUf)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(cmbUf, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(txtDdd, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -210,7 +234,7 @@ public class GUICliente extends javax.swing.JFrame {
                     .addComponent(lblCidade, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtCidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblUf, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbUf, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTelefone, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -246,6 +270,53 @@ public class GUICliente extends javax.swing.JFrame {
         daoCliente = new DaoCliente(conexao.conectar());
     }//GEN-LAST:event_formWindowOpened
 
+    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
+        conexao.fecharConexao();
+        dispose();
+    }//GEN-LAST:event_btnSairActionPerformed
+
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+
+//        if(validacpf.validarCpf(txtCpf.getText())){
+            String cpf = (txtCpf.getText().replace("-","").replace(".",""));
+            if((daoCliente.consultar(cpf) != null)){
+                consulta = daoCliente.consultar(cpf);
+                inverteCampos();
+                btnConsultar.setEnabled(false);
+                btnAlterar.setEnabled(true);
+                btnExcluir.setEnabled(true);
+                txtNome.setText(consulta.getNome());
+                txtEndereco.setText(consulta.getEndereco());
+                txtCidade.setText((consulta.getCidade()));
+                cmbUf.setSelectedItem(consulta.getUf());
+                txtDdd.setText(consulta.getDdd());
+                txtTelefone.setText(consulta.getTelefone());
+                txtCep.setText(consulta.getCep());
+                txtLimiteCred.setText(String.valueOf(consulta.getLimiteCred()));
+                lblLimiteDisp.setText(String.valueOf(consulta.getLimiteDisp()));
+            }else{
+                inverteCampos();
+                btnConsultar.setEnabled(false);
+                btnIncluir.setEnabled(true);
+            }
+//        }else{
+//           JOptionPane.showMessageDialog(null, "CPF Inválido.");
+//        }
+        
+    }//GEN-LAST:event_btnConsultarActionPerformed
+
+    private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
+        daoCliente.inserir(instanciaOjbeto(cliente));
+        
+        //TODO: ARRUMAR REAÇÃO, DESABILITAR BOTÃO, CAMPOS ETC.
+    }//GEN-LAST:event_btnIncluirActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        daoCliente.alterar(instanciaOjbeto(cliente));
+        
+        
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -280,14 +351,44 @@ public class GUICliente extends javax.swing.JFrame {
             }
         });
     }
-
+    
+    private void inverteCampos(){
+    txtCep.setEnabled(!txtCep.isEnabled());
+    txtCidade.setEnabled(!txtCidade.isEnabled());
+    txtCpf.setEnabled(!txtCpf.isEnabled());
+    txtDdd.setEnabled(!txtDdd.isEnabled());
+    txtEndereco.setEnabled(!txtEndereco.isEnabled());
+    txtLimiteCred.setEnabled(!txtLimiteCred.isEnabled());
+    txtNome.setEnabled(!txtNome.isEnabled());
+    txtTelefone.setEnabled(!txtTelefone.isEnabled());
+    cmbUf.setEnabled(!cmbUf.isEnabled());
+    }
+    
+    private Cliente instanciaOjbeto(Cliente c){
+        String cpf = (txtCpf.getText().replace("-","").replace(".",""));
+        c = new Cliente(cpf, txtNome.getText(), Double.valueOf(txtLimiteCred.getText()));
+        c.setEndereco(txtEndereco.getText());
+        c.setCidade(txtCidade.getText());
+        c.setUf(cmbUf.getSelectedItem().toString());
+        c.setDdd(txtDdd.getText());
+        c.setTelefone(txtTelefone.getText());
+        c.setCep(txtCep.getText());
+        if(lblLimiteDisp.getText().length() > 0){
+            c.setLimiteDisp(Double.valueOf(lblLimiteDisp.getText()));  
+        }else{
+             c.setLimiteDisp(0);
+        }  
+        
+        return (c);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnConsultar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnIncluir;
     private javax.swing.JButton btnSair;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> cmbUf;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblCep;
     private javax.swing.JLabel lblCidade;
@@ -310,4 +411,6 @@ public class GUICliente extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
     private Conexao conexao=null;
     private DaoCliente daoCliente=null;
+    private CPF validacpf=null;
+    private Cliente consulta, cliente;
 }
