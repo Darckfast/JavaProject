@@ -37,38 +37,21 @@ public class DaoPedido {
     public void alterar(Pedido pedido) {
         PreparedStatement ps = null;
         try {
-<<<<<<< HEAD
             ps = conn.prepareStatement("UPDATE PEDIDO" +
                                                             "SET qtdeVendidadataEmissaoPedido = ?," + 
                                                             "dataPgto = ?," + 
                                                             "status = ?," + 
                                                             "cliente = ?," + 
                                                             "vendedor = ?" +
-=======
-            ps = conn.prepareStatement("UPDATE PEDIDO set qtdeVendidadataEmissaoPedido = ?" + 
-                                                            "dataPgto = ?" + 
-                                                            "status = ?" + 
-                                                            "cliente = ?" + 
-                                                            "vendedor = ? " +
->>>>>>> origin/master
                                                  "where numero = ?");
             
-<<<<<<< HEAD
             ps.setString(1, pedido.getDataEmissaoPedido());
             ps.setString(2, pedido.getDataPgto());
             ps.setBoolean(3, pedido.getStatus());
             ps.setString(4, pedido.getCliente().getCpf());
             ps.setString(5, pedido.getVendedor().getCpf());
             ps.setInt(6, pedido.getNumero());
-=======
-            ps.setInt(6, pedido.getNumero());
-            ps.setString(1, pedido.getDataEmissaoPedido());
-            ps.setString(2, pedido.getDataPgto());
-            ps.setBoolean(3, pedido.getStatus());
-            ps.setString(4, pedido.getCliente().getCpf());
-            ps.setString(5, pedido.getVendedor().getCpf());
->>>>>>> origin/master
-                
+
             ps.execute();
         } catch (SQLException ex) {
              System.out.println(ex.toString());   
