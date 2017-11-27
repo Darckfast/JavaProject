@@ -240,7 +240,7 @@ public class GUICliente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        conexao = new Conexao("BD1611024","BD1611024");
+        conexao = new Conexao("BD1611017","BD1611017");
         conexao.setDriver("oracle.jdbc.driver.OracleDriver");
         conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
         daoCliente = new DaoCliente(conexao.conectar());

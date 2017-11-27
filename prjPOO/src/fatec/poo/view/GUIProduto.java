@@ -225,7 +225,7 @@ public class GUIProduto extends javax.swing.JFrame {
     }//GEN-LAST:event_txtEstoqueActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        conexao = new Conexao("BD1611024","BD1611024");
+        conexao = new Conexao("BD1611017","BD1611017");
         conexao.setDriver("oracle.jdbc.driver.OracleDriver");
         conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
         daoProduto = new DaoProduto(conexao.conectar());
