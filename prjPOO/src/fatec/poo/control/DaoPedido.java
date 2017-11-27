@@ -18,13 +18,15 @@ public class DaoPedido {
     public void inserir(Pedido pedido) {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("INSERT INTO tbpedido(numero, dataEmissaoPedido,dataPgto,status,cliente,vendedor) VALUES(?,?)");
-            ps.setString(1, String.valueOf(pedido.getNumero()));
-            ps.setString(2, String.valueOf(pedido.getDataEmissaoPedido()));
-            ps.setString(3, String.valueOf(pedido.getDataPgto()));
-            ps.setString(4, String.valueOf(pedido.getStatus()));
-            ps.setString(5, String.valueOf(pedido.getCliente()));
-            ps.setString(6, String.valueOf(pedido.getVendedor()));
+            ps = conn.prepareStatement("INSERT INTO PEDIDO" + 
+                                                        "(numero, dataEmissaoPedido,dataPgto,status,cliente,vendedor)" + 
+                                                        "VALUES(?,?,?,?,?,?)");
+            ps.setInt(1, pedido.getNumero());
+            ps.setString(2, pedido.getDataEmissaoPedido());
+            ps.setString(3, pedido.getDataPgto());
+            ps.setBoolean(4, pedido.getStatus());
+            ps.setString(5, pedido.getCliente().getCpf());
+            ps.setString(6, pedido.getVendedor().getCpf());
             
             ps.execute();
         } catch (SQLException ex) {
@@ -35,15 +37,19 @@ public class DaoPedido {
     public void alterar(Pedido pedido) {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("UPDATE tbpedido set qtdeVendidadataEmissaoPedido = ?" + " dataPgto = ?" + "status = ?" + "cliente = ?" + "vendedor = ? " +
+            ps = conn.prepareStatement("UPDATE PEDIDO set qtdeVendidadataEmissaoPedido = ?" + 
+                                                            "dataPgto = ?" + 
+                                                            "status = ?" + 
+                                                            "cliente = ?" + 
+                                                            "vendedor = ? " +
                                                  "where numero = ?");
             
-            ps.setString(1, String.valueOf(pedido.getNumero()));
-            ps.setString(2, String.valueOf(pedido.getDataEmissaoPedido()));
-            ps.setString(3, String.valueOf(pedido.getDataPgto()));
-            ps.setString(4, String.valueOf(pedido.getStatus()));
-            ps.setString(5, String.valueOf(pedido.getCliente()));
-            ps.setString(6, String.valueOf(pedido.getVendedor()));
+            ps.setInt(6, pedido.getNumero());
+            ps.setString(1, pedido.getDataEmissaoPedido());
+            ps.setString(2, pedido.getDataPgto());
+            ps.setBoolean(3, pedido.getStatus());
+            ps.setString(4, pedido.getCliente().getCpf());
+            ps.setString(5, pedido.getVendedor().getCpf());
                 
             ps.execute();
         } catch (SQLException ex) {
@@ -56,10 +62,10 @@ public class DaoPedido {
        
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("SELECT * from tbpedido where " +
+            ps = conn.prepareStatement("SELECT * from PEDIDO where " +
                                                  "numero = ?");
             
-            ps.setString(1, String.valueOf(numero));
+            ps.setInt(1, numero);
             ResultSet rs = ps.executeQuery();
            
             if (rs.next() == true) {
@@ -77,7 +83,7 @@ public class DaoPedido {
         try {
             ps = conn.prepareStatement("DELETE FROM tbpedido where numero = ?");
             
-            ps.setString(1, String.valueOf(pedido.getNumero()));
+            ps.setInt(1, pedido.getNumero());
                       
             ps.execute();
         } catch (SQLException ex) {
