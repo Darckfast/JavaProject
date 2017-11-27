@@ -18,9 +18,12 @@ public class DaoProduto {
     public void inserir(Produto produto) {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("INSERT INTO tbproduto(codigo, descricao) VALUES(?,?)");
+            ps = conn.prepareStatement("INSERT INTO tbproduto(codigo, descricao,qtdeDisponivel,precoUnit,estoqueMin) VALUES(?,?,?,?,?)");
             ps.setString(1, String.valueOf(produto.getCodigo()));
             ps.setString(2, produto.getDescricao());
+            ps.setString(3, String.valueOf(produto.getQtdeDisponivel()));
+            ps.setString(4, String.valueOf(produto.getPrecoUnit()));
+            ps.setString(5, String.valueOf(produto.getEstoqueMin()));
                       
             ps.execute();
         } catch (SQLException ex) {
@@ -32,9 +35,15 @@ public class DaoProduto {
         PreparedStatement ps = null;
         try {
             ps = conn.prepareStatement("UPDATE tbproduto set descricao = ? " +
-                                                 "where codigo = ?");
+                                                            "qtdedisponivel = ?" +
+                                                            "precounit = ?" +
+                                                            "estoquemin = ?" +
+                                                            "where codigo = ?");
             ps.setString(1, String.valueOf(produto.getCodigo()));
             ps.setString(2, produto.getDescricao());
+            ps.setString(3, String.valueOf(produto.getQtdeDisponivel()));
+            ps.setString(4, String.valueOf(produto.getPrecoUnit()));
+            ps.setString(5, String.valueOf(produto.getEstoqueMin()));
             
             ps.execute();
         } catch (SQLException ex) {

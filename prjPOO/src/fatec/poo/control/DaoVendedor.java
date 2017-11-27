@@ -18,11 +18,13 @@ public class DaoVendedor {
     public void inserir(Vendedor vendedor) {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("INSERT INTO tbvendedor(cpf, nome, salarioBase) VALUES(?,?,?)");
+            ps = conn.prepareStatement("INSERT INTO tbvendedor(cpf, nome, salarioBase,comissao) VALUES(?,?,?,?)");
             ps.setString(1, vendedor.getCpf());
             ps.setString(2, vendedor.getNome());
             ps.setString(3, String.valueOf(vendedor.getSalarioBase()));
-                      
+            ps.setString(4, String.valueOf(vendedor.getComissao()));
+      
+            
             ps.execute();
         } catch (SQLException ex) {
              System.out.println(ex.toString());   
@@ -33,7 +35,9 @@ public class DaoVendedor {
         PreparedStatement ps = null;
         try {
             ps = conn.prepareStatement("UPDATE tbvendedor set nome = ? " +
-                                                 "where cpf = ?");
+                                                              "salariobase = ?" +
+                                                              "comissao = ?" +
+                                                              "where cpf = ?");
             
             ps.setString(1, vendedor.getCpf());
             ps.setString(2, vendedor.getNome());

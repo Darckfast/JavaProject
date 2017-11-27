@@ -18,10 +18,11 @@ public class DaoCliente {
     public void inserir(Cliente cliente) {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("INSERT INTO tbcliente(cpf, nome, limiteCred) VALUES(?,?,?)");
+            ps = conn.prepareStatement("INSERT INTO tbcliente(cpf, nome, limiteCred,limiteDisp) VALUES(?,?,?,?)");
             ps.setString(1, cliente.getCpf());
             ps.setString(2, cliente.getNome());
             ps.setString(3, String.valueOf(cliente.getLimiteCred()));
+            ps.setString(4, String.valueOf(cliente.getLimiteDisp()));
                       
             ps.execute();
         } catch (SQLException ex) {
@@ -32,13 +33,14 @@ public class DaoCliente {
     public void alterar(Cliente cliente) {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("UPDATE tbcliente set nome = ? " +
+            ps = conn.prepareStatement("UPDATE tbcliente set nome = ? " + "limiteCred = ?" + "limiteDisp = ?" +
                                                  "where cpf = ?");
             
             ps.setString(1, cliente.getCpf());
             ps.setString(2, cliente.getNome());
             ps.setString(3, String.valueOf(cliente.getLimiteCred()));
-           
+            ps.setString(4, String.valueOf(cliente.getLimiteDisp()));
+
             ps.execute();
         } catch (SQLException ex) {
              System.out.println(ex.toString());   
