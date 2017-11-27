@@ -45,12 +45,12 @@ public class DaoPedido {
                                                             "vendedor = ?" +
                                                  "where numero = ?");
             
-            ps.setInt(6, pedido.getNumero());
             ps.setString(1, pedido.getDataEmissaoPedido());
             ps.setString(2, pedido.getDataPgto());
             ps.setBoolean(3, pedido.getStatus());
             ps.setString(4, pedido.getCliente().getCpf());
             ps.setString(5, pedido.getVendedor().getCpf());
+            ps.setInt(6, pedido.getNumero());
                 
             ps.execute();
         } catch (SQLException ex) {

@@ -42,11 +42,11 @@ public class DaoProduto {
                                                             "precounit = ?," +
                                                             "estoquemin = ?" +
                                                             "where codigo = ?");
-            ps.setInt(5, produto.getCodigo());
             ps.setString(1, produto.getDescricao());
             ps.setInt(2, produto.getQtdeDisponivel());
             ps.setDouble(3, produto.getPrecoUnit());
             ps.setInt(4, produto.getEstoqueMin());
+            ps.setInt(5, produto.getCodigo());
                       
             ps.execute();
         } catch (SQLException ex) {

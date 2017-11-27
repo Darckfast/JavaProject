@@ -38,9 +38,9 @@ public class DaoItemPedido {
                                                               "codigo = ?" +
                                                               "where numeroItem = ?");
             
-            ps.setInt(3, itempedido.getNumeroItem());
             ps.setInt(1, itempedido.getQtdeVendida());
             ps.setInt(2, itempedido.getProduto().getCodigo());
+            ps.setInt(3, itempedido.getNumeroItem());
                 
             ps.execute();
         } catch (SQLException ex) {

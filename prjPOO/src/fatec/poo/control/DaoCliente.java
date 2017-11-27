@@ -55,16 +55,16 @@ public class DaoCliente {
                                                             "telefone= ?," +
                                                             "where cpf = ?");
             
-            ps.setString(1, cliente.getCpf());
-            ps.setString(2, cliente.getNome());
-            ps.setString(3, cliente.getEndereco());
-            ps.setString(4, cliente.getCidade());
-            ps.setString(5, cliente.getCep());
-            ps.setString(6, cliente.getUf());
-            ps.setString(7, cliente.getDdd());
-            ps.setString(8, cliente.getTelefone());
-            ps.setDouble(9, (cliente.getLimiteCred()));
-            ps.setDouble(10,(cliente.getLimiteDisp()));
+            ps.setString(1, cliente.getNome());
+            ps.setString(2, cliente.getEndereco());
+            ps.setString(3, cliente.getCidade());
+            ps.setString(4, cliente.getCep());
+            ps.setString(5, cliente.getUf());
+            ps.setString(6, cliente.getDdd());
+            ps.setString(7, cliente.getTelefone());
+            ps.setDouble(8, (cliente.getLimiteCred()));
+            ps.setDouble(9,(cliente.getLimiteDisp()));
+            ps.setString(10, cliente.getCpf());
            
 
             ps.execute();

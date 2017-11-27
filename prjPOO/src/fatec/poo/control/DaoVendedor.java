@@ -54,7 +54,6 @@ public class DaoVendedor {
                                                               "telefone = ?" +
                                                               "where cpf = ?;");
             
-            ps.setString(10, vendedor.getCpf());
             ps.setString(1, vendedor.getNome());
             ps.setDouble(2, vendedor.getSalarioBase());
             ps.setDouble(3, vendedor.getComissao());
@@ -64,6 +63,7 @@ public class DaoVendedor {
             ps.setString(7, vendedor.getUf());
             ps.setString(8, vendedor.getDdd());
             ps.setString(9, vendedor.getTelefone());
+            ps.setString(10, vendedor.getCpf());
            
             ps.execute();
         } catch (SQLException ex) {
