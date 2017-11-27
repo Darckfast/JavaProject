@@ -34,13 +34,24 @@ public class DaoItemPedido {
     public void alterar(ItemPedido itempedido) {
         PreparedStatement ps = null;
         try {
+<<<<<<< HEAD
             ps = conn.prepareStatement("UPDATE ITEMPEDIDO" + "SET qtdeVendida = ?," +
                                                               "codigo = ?" +
+=======
+            ps = conn.prepareStatement("UPDATE ITEMPEDIDO set qtdeVendida = ? " +
+                                                              "codigo = ? " +
+>>>>>>> origin/master
                                                               "where numeroItem = ?");
             
+<<<<<<< HEAD
             ps.setInt(1, itempedido.getQtdeVendida());
             ps.setInt(2, itempedido.getProduto().getCodigo());
             ps.setInt(3, itempedido.getNumeroItem());
+=======
+            ps.setInt(3, itempedido.getNumeroItem());
+            ps.setInt(1, itempedido.getQtdeVendida());
+            ps.setInt(2, itempedido.getProduto().getCodigo());
+>>>>>>> origin/master
                 
             ps.execute();
         } catch (SQLException ex) {
