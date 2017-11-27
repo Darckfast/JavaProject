@@ -18,12 +18,14 @@ public class DaoProduto {
     public void inserir(Produto produto) {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("INSERT INTO tbproduto(codigo, descricao,qtdeDisponivel,precoUnit,estoqueMin) VALUES(?,?,?,?,?)");
-            ps.setString(1, String.valueOf(produto.getCodigo()));
+            ps = conn.prepareStatement("INSERT INTO PRODUTO" +
+                                                    "(codigo, descricao,qtdeDisponivel,precoUnit,estoqueMin)" +
+                                                    "VALUES(?,?,?,?,?)");
+            ps.setInt(1, produto.getCodigo());
             ps.setString(2, produto.getDescricao());
-            ps.setString(3, String.valueOf(produto.getQtdeDisponivel()));
-            ps.setString(4, String.valueOf(produto.getPrecoUnit()));
-            ps.setString(5, String.valueOf(produto.getEstoqueMin()));
+            ps.setInt(3, produto.getQtdeDisponivel());
+            ps.setDouble(4, produto.getPrecoUnit());
+            ps.setInt(5, produto.getEstoqueMin());
                       
             ps.execute();
         } catch (SQLException ex) {
@@ -34,17 +36,18 @@ public class DaoProduto {
     public void alterar(Produto produto) {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("UPDATE tbproduto set descricao = ? " +
-                                                            "qtdedisponivel = ?" +
-                                                            "precounit = ?" +
+            ps = conn.prepareStatement("UPDATE PRODUTO" + 
+                                                            "set descricao = ?," +
+                                                            "qtdedisponivel = ?," +
+                                                            "precounit = ?," +
                                                             "estoquemin = ?" +
                                                             "where codigo = ?");
-            ps.setString(1, String.valueOf(produto.getCodigo()));
-            ps.setString(2, produto.getDescricao());
-            ps.setString(3, String.valueOf(produto.getQtdeDisponivel()));
-            ps.setString(4, String.valueOf(produto.getPrecoUnit()));
-            ps.setString(5, String.valueOf(produto.getEstoqueMin()));
-            
+            ps.setInt(5, produto.getCodigo());
+            ps.setString(1, produto.getDescricao());
+            ps.setInt(2, produto.getQtdeDisponivel());
+            ps.setDouble(3, produto.getPrecoUnit());
+            ps.setInt(4, produto.getEstoqueMin());
+                      
             ps.execute();
         } catch (SQLException ex) {
              System.out.println(ex.toString());   
@@ -56,10 +59,10 @@ public class DaoProduto {
        
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("SELECT * from tbproduto where " +
+            ps = conn.prepareStatement("SELECT * from PRODUTO where " +
                                                  "codigo = ?");
             
-            ps.setString(1, String.valueOf(codigo));
+            ps.setInt(1, codigo);
             ResultSet rs = ps.executeQuery();
            
             if (rs.next() == true) {
@@ -75,9 +78,9 @@ public class DaoProduto {
      public void excluir(Produto produto) {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("DELETE FROM tbproduto where codigo = ?");
+            ps = conn.prepareStatement("DELETE FROM PRODUTO where codigo = ?");
             
-            ps.setString(1, String.valueOf(produto.getCodigo()));
+            ps.setInt(1, produto.getCodigo());
                       
             ps.execute();
         } catch (SQLException ex) {

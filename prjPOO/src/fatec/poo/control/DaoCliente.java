@@ -43,27 +43,28 @@ public class DaoCliente {
     public void alterar(Cliente cliente) {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("UPDATE tbcliente set nome = ?" +
-                                                            "limiteCred = ?" +
-                                                            "limiteDisp = ?" +
-                                                            "endereco = ?" +
-                                                            "cidade = ?" +
-                                                            "cep = ?" +
-                                                            "uf = ?" +
-                                                            "ddd = ?" +
-                                                            "telefone= ?" +
+            ps = conn.prepareStatement("UPDATE CLIENTE"+ 
+                                                            "SET nome = ?," +
+                                                            "limiteCred = ?," +
+                                                            "limiteDisp = ?," +
+                                                            "endereco = ?," +
+                                                            "cidade = ?," +
+                                                            "cep = ?," +
+                                                            "uf = ?," +
+                                                            "ddd = ?," +
+                                                            "telefone= ?," +
                                                             "where cpf = ?");
             
             ps.setString(1, cliente.getCpf());
             ps.setString(2, cliente.getNome());
-            ps.setString(3, String.valueOf(cliente.getLimiteCred()));
-            ps.setString(4, String.valueOf(cliente.getLimiteDisp()));
-            ps.setString(5, cliente.getEndereco());
-            ps.setString(6, cliente.getCidade());
-            ps.setString(7, cliente.getCep());
-            ps.setString(8, cliente.getUf());
-            ps.setString(9, cliente.getDdd());
-            ps.setString(10, cliente.getTelefone());
+            ps.setString(3, cliente.getEndereco());
+            ps.setString(4, cliente.getCidade());
+            ps.setString(5, cliente.getCep());
+            ps.setString(6, cliente.getUf());
+            ps.setString(7, cliente.getDdd());
+            ps.setString(8, cliente.getTelefone());
+            ps.setDouble(9, (cliente.getLimiteCred()));
+            ps.setDouble(10,(cliente.getLimiteDisp()));
            
 
             ps.execute();
@@ -102,7 +103,7 @@ public class DaoCliente {
      public void excluir(Cliente cliente) {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("DELETE FROM tbcliente where cpf = ?");
+            ps = conn.prepareStatement("DELETE FROM CLIENTE where cpf = ?");
             
             ps.setString(1, cliente.getCpf());
                       

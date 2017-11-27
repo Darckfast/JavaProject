@@ -6,16 +6,11 @@
             <file>file:/root/POO/prjPOO/src/Produto.java</file>
         </group>
         <group>
-            <file>file:/root/JavaProject/prjPOO/src/fatec/poo/control/DaoProduto.java</file>
-            <file>file:/root/JavaProject/prjPOO/src/fatec/poo/model/Pessoa.java</file>
             <file>file:/root/JavaProject/prjPOO/src/fatec/poo/control/DaoCliente.java</file>
-            <file>file:/root/JavaProject/prjPOO/src/fatec/poo/model/ItemPedido.java</file>
             <file>file:/root/JavaProject/prjPOO/src/fatec/poo/control/DaoVendedor.java</file>
-            <file>file:/root/JavaProject/prjPOO/src/fatec/poo/model/Vendedor.java</file>
             <file>file:/root/JavaProject/prjPOO/src/fatec/poo/model/Cliente.java</file>
-            <file>file:/root/JavaProject/prjPOO/src/fatec/poo/model/Pedido.java</file>
-            <file>file:/root/JavaProject/prjPOO/src/fatec/poo/model/Produto.java</file>
-            <file>file:/root/JavaProject/prjPOO/src/fatec/poo/control/Conexao.java</file>
+            <file>file:/root/JavaProject/prjPOO/src/fatec/poo/view/GUIProduto.java</file>
+            <file>file:/root/JavaProject/prjPOO/src/fatec/poo/view/GUIVendedor.java</file>
         </group>
     </open-files>
 </project-private>
