@@ -18,12 +18,18 @@ public class DaoVendedor {
     public void inserir(Vendedor vendedor) {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("INSERT INTO tbvendedor(cpf, nome, salarioBase,comissao) VALUES(?,?,?,?)");
+            ps = conn.prepareStatement("INSERT INTO tbvendedor(cpf, nome, salarioBase,comissao,endereco,cidade,cep,uf,ddd,telefone) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
             ps.setString(1, vendedor.getCpf());
             ps.setString(2, vendedor.getNome());
             ps.setString(3, String.valueOf(vendedor.getSalarioBase()));
             ps.setString(4, String.valueOf(vendedor.getComissao()));
-      
+            ps.setString(5, vendedor.getEndereco());
+            ps.setString(6, vendedor.getCidade());
+            ps.setString(7, vendedor.getCep());
+            ps.setString(8, vendedor.getUf());
+            ps.setString(9, vendedor.getDdd());
+            ps.setString(10, vendedor.getTelefone());
+            
             
             ps.execute();
         } catch (SQLException ex) {
@@ -34,14 +40,27 @@ public class DaoVendedor {
     public void alterar(Vendedor vendedor) {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("UPDATE tbvendedor set nome = ? " +
-                                                              "salariobase = ?" +
+            ps = conn.prepareStatement("UPDATE tbvendedor set nome = ?"+ 
+                                                              "salarioBase = ?" +
                                                               "comissao = ?" +
+                                                              "endereco = ?" +
+                                                              "cidade = ?" +
+                                                              "cep = ?" +
+                                                              "uf = ?" +
+                                                              "ddd = ?" +
+                                                              "telefone = ?" +
                                                               "where cpf = ?");
             
             ps.setString(1, vendedor.getCpf());
             ps.setString(2, vendedor.getNome());
             ps.setString(3, String.valueOf(vendedor.getSalarioBase()));
+            ps.setString(4, String.valueOf(vendedor.getComissao()));
+            ps.setString(5, vendedor.getEndereco());
+            ps.setString(6, vendedor.getCidade());
+            ps.setString(7, vendedor.getCep());
+            ps.setString(8, vendedor.getUf());
+            ps.setString(9, vendedor.getDdd());
+            ps.setString(10, vendedor.getTelefone());
            
             ps.execute();
         } catch (SQLException ex) {
