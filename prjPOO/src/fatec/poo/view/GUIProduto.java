@@ -101,6 +101,11 @@ public class GUIProduto extends javax.swing.JFrame {
         btnSair.setFont(new java.awt.Font("Cantarell", 0, 15)); // NOI18N
         btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/exit.png"))); // NOI18N
         btnSair.setText("Sair");
+        btnSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSairActionPerformed(evt);
+            }
+        });
 
         txtDescricao.setEnabled(false);
 
@@ -231,6 +236,11 @@ public class GUIProduto extends javax.swing.JFrame {
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         daoProduto.excluir(instanciaOjbeto(produto));
     }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
+        conexao.fecharConexao();
+        dispose();        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSairActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

@@ -90,6 +90,11 @@ public class GUIVendedor extends javax.swing.JFrame {
         btnSair.setMnemonic('s');
         btnSair.setText("Sair");
         btnSair.setName("btnSair"); // NOI18N
+        btnSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSairActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Eraser.png"))); // NOI18N
         btnExcluir.setMnemonic('e');
@@ -321,6 +326,11 @@ public class GUIVendedor extends javax.swing.JFrame {
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         daoVendedor.alterar(instanciaOjbeto(vendedor));
     }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
+      conexao.fecharConexao();
+        dispose();// TODO add your handling code here:
+    }//GEN-LAST:event_btnSairActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
