@@ -74,6 +74,13 @@ public class DaoVendedor {
            
             if (rs.next() == true) {
                 d = new Vendedor (cpf, rs.getString("nome"), rs.getDouble("salarioBase"));
+                d.setCep(rs.getString("cep"));
+                d.setCidade(rs.getString("cidade"));
+                d.setDdd(rs.getString("ddd"));
+                d.setEndereco(rs.getString("endereco"));
+                d.setTelefone(rs.getString("telefone"));
+                d.setComissao(rs.getDouble("comissao"));
+                d.setUf(rs.getString("uf"));
             }
         }
         catch (SQLException ex) { 

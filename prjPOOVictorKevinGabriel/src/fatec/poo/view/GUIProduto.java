@@ -3,6 +3,7 @@ package fatec.poo.view;
 import fatec.poo.control.Conexao;
 import fatec.poo.control.DaoProduto;
 import fatec.poo.model.Produto;
+import javafx.scene.input.DataFormat;
 import javax.swing.JOptionPane;
 
 /**
@@ -226,14 +227,35 @@ public class GUIProduto extends javax.swing.JFrame {
 
     private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
         daoProduto.inserir(instanciaOjbeto(produto));
+        btnConsultar.setEnabled(true);
+        btnIncluir.setEnabled(false);
+        limpaCampos();
+        inverteCampos();
     }//GEN-LAST:event_btnIncluirActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        daoProduto.alterar(instanciaOjbeto(produto));
+        int dialogResult = JOptionPane.showConfirmDialog (null, "Deseja Alterar esse produto?", "", JOptionPane.YES_NO_OPTION);
+        if(dialogResult == JOptionPane.YES_OPTION){
+            txtPrecoUni.setText(txtPrecoUni.getText().replace(",", "."));
+            daoProduto.alterar(instanciaOjbeto(produto));
+            btnConsultar.setEnabled(true);
+            btnExcluir.setEnabled(false);
+            btnAlterar.setEnabled(false);
+            limpaCampos();
+            inverteCampos();
+        }
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        daoProduto.excluir(instanciaOjbeto(produto));
+        int dialogResult = JOptionPane.showConfirmDialog (null, "Deseja Excluir esse produto?", "", JOptionPane.YES_NO_OPTION);
+        if(dialogResult == JOptionPane.YES_OPTION){
+            daoProduto.excluir(instanciaOjbeto(produto));
+            btnConsultar.setEnabled(true);
+            btnExcluir.setEnabled(false);
+            btnAlterar.setEnabled(false);
+            limpaCampos();
+            inverteCampos();
+        }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
@@ -272,6 +294,15 @@ public class GUIProduto extends javax.swing.JFrame {
             }
         });
     }
+    
+    private void limpaCampos(){
+    txtDescricao.setText("");
+    txtCodigo.setText("");
+    txtQtde.setText("");
+    txtEstoque.setText("");
+    txtPrecoUni.setText("");
+    }
+    
  private void inverteCampos(){
     txtCodigo.setEnabled(!txtCodigo.isEnabled());
     txtDescricao.setEnabled(!txtDescricao.isEnabled());
@@ -309,5 +340,6 @@ public class GUIProduto extends javax.swing.JFrame {
     private Conexao conexao=null;
     private DaoProduto daoProduto=null;
     private Produto consulta, produto;
+    private DataFormat df;
     
 }

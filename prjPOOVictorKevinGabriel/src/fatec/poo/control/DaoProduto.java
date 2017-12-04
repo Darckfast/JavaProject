@@ -63,6 +63,9 @@ public class DaoProduto {
            
             if (rs.next() == true) {
                 d = new Produto (codigo, rs.getString("descricao"));
+                d.setQtdeDisponivel(rs.getInt("qtdedisponivel"));
+                d.setPrecoUnit(rs.getDouble("precounit"));
+                d.setEstoqueMin(rs.getInt("estoquemin"));
             }
         }
         catch (SQLException ex) { 

@@ -299,18 +299,37 @@ public class GUICliente extends javax.swing.JFrame {
 
     private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
         daoCliente.inserir(instanciaOjbeto(cliente));
-        
+        btnConsultar.setEnabled(true);
+        btnIncluir.setEnabled(false);
+        limpaCampos();
+        inverteCampos();
         //TODO: ARRUMAR REAÇÃO, DESABILITAR BOTÃO, CAMPOS ETC.
     }//GEN-LAST:event_btnIncluirActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        daoCliente.alterar(instanciaOjbeto(cliente));
+        int dialogResult = JOptionPane.showConfirmDialog (null, "Deseja Alterar esse registro?", "", JOptionPane.YES_NO_OPTION);
+        if(dialogResult == JOptionPane.YES_OPTION){
+            daoCliente.alterar(instanciaOjbeto(cliente));
+            btnConsultar.setEnabled(true);
+            btnExcluir.setEnabled(false);
+            btnAlterar.setEnabled(false);
+            limpaCampos();
+            inverteCampos();
+        }
         
         
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        daoCliente.excluir(instanciaOjbeto(cliente));
+        int dialogResult = JOptionPane.showConfirmDialog (null, "Deseja Excluir esse registro?", "", JOptionPane.YES_NO_OPTION);
+        if(dialogResult == JOptionPane.YES_OPTION){
+            daoCliente.excluir(instanciaOjbeto(cliente));
+            btnConsultar.setEnabled(true);
+            btnExcluir.setEnabled(false);
+            btnAlterar.setEnabled(false);
+            limpaCampos();
+            inverteCampos();
+        }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     /**
@@ -346,6 +365,18 @@ public class GUICliente extends javax.swing.JFrame {
                 new GUICliente().setVisible(true);
             }
         });
+    }
+    
+    private void limpaCampos(){
+    txtCep.setText("");
+    txtCidade.setText("");
+    txtCpf.setText("");
+    txtDdd.setText("");
+    txtEndereco.setText("");
+    txtLimiteCred.setText("");
+    txtNome.setText("");
+    txtTelefone.setText("");
+    lblLimiteDisp.setText("");
     }
     
     private void inverteCampos(){

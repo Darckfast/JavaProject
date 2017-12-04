@@ -317,14 +317,34 @@ public class GUIVendedor extends javax.swing.JFrame {
 
     private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
         daoVendedor.inserir(instanciaOjbeto(vendedor));
+        btnConsultar.setEnabled(true);
+        btnIncluir.setEnabled(false);
+        limpaCampos();
+        inverteCampos();
     }//GEN-LAST:event_btnIncluirActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        daoVendedor.excluir(instanciaOjbeto(vendedor));
+        int dialogResult = JOptionPane.showConfirmDialog (null, "Deseja Excluir esse registro?", "", JOptionPane.YES_NO_OPTION);
+        if(dialogResult == JOptionPane.YES_OPTION){
+            daoVendedor.excluir(instanciaOjbeto(vendedor));
+            btnConsultar.setEnabled(true);
+            btnExcluir.setEnabled(false);
+            btnAlterar.setEnabled(false);
+            limpaCampos();
+            inverteCampos();
+        }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        daoVendedor.alterar(instanciaOjbeto(vendedor));
+        int dialogResult = JOptionPane.showConfirmDialog (null, "Deseja Alterar esse registro?", "", JOptionPane.YES_NO_OPTION);
+        if(dialogResult == JOptionPane.YES_OPTION){
+            daoVendedor.alterar(instanciaOjbeto(vendedor));
+            btnConsultar.setEnabled(true);
+            btnExcluir.setEnabled(false);
+            btnAlterar.setEnabled(false);
+            limpaCampos();
+            inverteCampos();
+        }
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
@@ -363,6 +383,19 @@ public class GUIVendedor extends javax.swing.JFrame {
             }
         });
     }
+    
+    private void limpaCampos(){
+    txtCep.setText("");
+    txtCidade.setText("");
+    txtCpf.setText("");
+    txtDdd.setText("");
+    txtEndereco.setText("");
+    txtSalariobase.setText("");
+    txtNome.setText("");
+    txtTelefone.setText("");
+    txtTaxacomissao.setText("");
+    }
+    
  private void inverteCampos(){
     txtCep.setEnabled(!txtCep.isEnabled());
     txtCidade.setEnabled(!txtCidade.isEnabled());
