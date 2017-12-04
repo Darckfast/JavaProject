@@ -288,7 +288,7 @@ public class GUIVendedor extends javax.swing.JFrame {
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
         String cpf = (txtCpf.getText().replace("-","").replace(".",""));
-        if(validacpf.validarCpf(txtCpf.getText())){
+       // if(validacpf.validarCpf(txtCpf.getText())){
             //String cpf = (txtCpf.getText().replace("-","").replace(".",""));
             if((daoVendedor.consultar(cpf) != null)){
                 consulta = daoVendedor.consultar(cpf);
@@ -310,9 +310,9 @@ public class GUIVendedor extends javax.swing.JFrame {
                 btnConsultar.setEnabled(false);
                 btnIncluir.setEnabled(true);
             }
-        }else{
+       /* }else{
            JOptionPane.showMessageDialog(null, "CPF Inválido.");
-        }
+        }*/
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
@@ -373,6 +373,7 @@ public class GUIVendedor extends javax.swing.JFrame {
     txtNome.setEnabled(!txtNome.isEnabled());
     txtTelefone.setEnabled(!txtTelefone.isEnabled());
     cmbUf.setEnabled(!cmbUf.isEnabled());
+    txtSalariobase.setEnabled(!txtSalariobase.isEnabled());
     }
     
     private Vendedor instanciaOjbeto(Vendedor v){
