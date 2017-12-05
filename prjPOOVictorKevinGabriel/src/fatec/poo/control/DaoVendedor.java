@@ -42,7 +42,7 @@ public class DaoVendedor {
     public void alterar(Vendedor vendedor) {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("UPDATE VENDEDOR SET nome = ?, salarioBase = ?, comissao = ?, endereco = ?,cidade = ?, cep = ?, uf = ?, ddd = ?, telefone = ? where cpf = ?;");
+            ps = conn.prepareStatement("UPDATE VENDEDOR SET nome = ?, salarioBase = ?, comissao = ?, endereco = ?,cidade = ?, cep = ?, uf = ?, ddd = ?, telefone = ? where cpf = ?");
             
             ps.setString(1, vendedor.getNome());
             ps.setDouble(2, vendedor.getSalarioBase());

@@ -5,6 +5,11 @@
  */
 package fatec.poo.view;
 
+import fatec.poo.control.Conexao;
+import fatec.poo.control.DaoCliente;
+import fatec.poo.control.DaoProduto;
+import fatec.poo.control.DaoVendedor;
+
 /**
  *
  * @author 0030481611024
@@ -131,7 +136,8 @@ public class GUIMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuSairActionPerformed
 
     private void jMenuEmitirPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuEmitirPedidoActionPerformed
-        // TODO add your handling code here:
+         GUIEmitirPedido EmitirPedido = new GUIEmitirPedido();
+         EmitirPedido.setVisible(true);
     }//GEN-LAST:event_jMenuEmitirPedidoActionPerformed
 
     /**

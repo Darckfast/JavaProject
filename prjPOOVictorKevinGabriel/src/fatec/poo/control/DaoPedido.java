@@ -70,7 +70,13 @@ public class DaoPedido {
             ResultSet rs = ps.executeQuery();
            
             if (rs.next() == true) {
-                d = new Pedido (numero, rs.getString("dataEmissaoPedido") );
+                d = new Pedido (numero, rs.getString("dataEmissaoPedido"));
+                d.setDataPgto(rs.getString("datapagto"));
+                d.setStatus(rs.getBoolean("status"));
+                d.setCliente(new DaoCliente(conn).consultar(rs.getString("cpfcliente")));
+                d.setVendedor(new DaoVendedor(conn).consultar(rs.getString("cpfvendedor")));
+                d.setItenspedido(new DaoItemPedido(conn).consultarPedido(numero));
+                //TODO: adicionar arraylist.
             }
         }
         catch (SQLException ex) { 

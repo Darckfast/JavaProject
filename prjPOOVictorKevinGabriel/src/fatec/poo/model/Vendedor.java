@@ -26,11 +26,11 @@ public class Vendedor extends Pessoa{
     }
 
     public double getComissao() {
-        return comissao;
+        return comissao * 100;
     }
 
     public void setComissao(double comissao) {
-        this.comissao = 1 + comissao / 100;
+        this.comissao = comissao / 100;
     }
     public void addPedido (Pedido p){
         pedidos.add(p);

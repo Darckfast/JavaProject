@@ -5,6 +5,18 @@
  */
 package fatec.poo.view;
 
+import fatec.poo.control.Conexao;
+import fatec.poo.control.DaoCliente;
+import fatec.poo.control.DaoItemPedido;
+import fatec.poo.control.DaoPedido;
+import fatec.poo.control.DaoProduto;
+import fatec.poo.control.DaoVendedor;
+import fatec.poo.model.Cliente;
+import fatec.poo.model.ItemPedido;
+import fatec.poo.model.Pedido;
+import fatec.poo.model.Produto;
+import fatec.poo.model.Vendedor;
+
 /**
  *
  * @author 0030481611024
@@ -63,8 +75,13 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
         btnExcluirPedido = new javax.swing.JButton();
         btnSair = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Emitir Pedido");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         pnlPedido.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Pedido"));
         pnlPedido.setToolTipText("");
@@ -72,6 +89,12 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
         lblNumPedido.setText("Número do Pedido");
 
         lblData.setText("Data do Pedido");
+
+        txtNumPedido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNumPedidoActionPerformed(evt);
+            }
+        });
 
         try {
             txtDataPedido.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
@@ -117,18 +140,23 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
         );
 
         pnlDadosCli.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Dados Cliente"));
+        pnlDadosCli.setEnabled(false);
 
         lblCPFCli.setText("CPF Cliente");
+        lblCPFCli.setEnabled(false);
 
         try {
             txtCPFCliente.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        txtCPFCliente.setEnabled(false);
 
         txtCliente.setEditable(false);
+        txtCliente.setEnabled(false);
 
         btnConsultaCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/pesq.png"))); // NOI18N
+        btnConsultaCliente.setEnabled(false);
         btnConsultaCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConsultaClienteActionPerformed(evt);
@@ -163,18 +191,23 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
         );
 
         pnlDadosVendedor.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Dados Vendedor"));
+        pnlDadosVendedor.setEnabled(false);
 
         lblCPFVendedor.setText("CPF Vendedor");
+        lblCPFVendedor.setEnabled(false);
 
         try {
             txtCPFVendedor.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        txtCPFVendedor.setEnabled(false);
 
         txtVendedor.setEditable(false);
+        txtVendedor.setEnabled(false);
 
         btnConsultaVendedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/pesq.png"))); // NOI18N
+        btnConsultaVendedor.setEnabled(false);
         btnConsultaVendedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConsultaVendedorActionPerformed(evt);
@@ -210,19 +243,34 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
 
         pnlItens.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Itens do Pedido"));
         pnlItens.setToolTipText("");
+        pnlItens.setEnabled(false);
 
         lblCodProd.setText("Código Produto");
+        lblCodProd.setEnabled(false);
 
         lblQuantidade.setText("Quantidade Vendida");
+        lblQuantidade.setEnabled(false);
 
         lblTotalPedido.setText("Valor Total do Pedido");
+        lblTotalPedido.setEnabled(false);
 
         lblTotalItens.setText("Quantidade de Itens do Pedido");
+        lblTotalItens.setEnabled(false);
+
+        txtCodProduto.setEnabled(false);
 
         txtProduto.setEditable(false);
+        txtProduto.setEnabled(false);
+
+        txtQtdeVendida.setEnabled(false);
+
+        txtValorTotal.setEnabled(false);
+
+        txtTotalItens.setEnabled(false);
 
         btnAddProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/add.png"))); // NOI18N
         btnAddProduto.setText("Adicionar Item");
+        btnAddProduto.setEnabled(false);
         btnAddProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddProdutoActionPerformed(evt);
@@ -231,6 +279,7 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
 
         btnRemProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/rem.png"))); // NOI18N
         btnRemProduto.setText("Remover Item");
+        btnRemProduto.setEnabled(false);
         btnRemProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRemProdutoActionPerformed(evt);
@@ -238,6 +287,7 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
         });
 
         btnConsultaProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/pesq.png"))); // NOI18N
+        btnConsultaProduto.setEnabled(false);
         btnConsultaProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConsultaProdutoActionPerformed(evt);
@@ -267,6 +317,7 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblProduto.setEnabled(false);
         jScrollPane1.setViewportView(tblProduto);
 
         javax.swing.GroupLayout pnlItensLayout = new javax.swing.GroupLayout(pnlItens);
@@ -342,6 +393,7 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
 
         btnIncluirPedido.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/save.png"))); // NOI18N
         btnIncluirPedido.setText("Incluir");
+        btnIncluirPedido.setEnabled(false);
         btnIncluirPedido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnIncluirPedidoActionPerformed(evt);
@@ -350,6 +402,7 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
 
         btnAlterarPedido.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Alterar.png"))); // NOI18N
         btnAlterarPedido.setText("Alterar");
+        btnAlterarPedido.setEnabled(false);
         btnAlterarPedido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAlterarPedidoActionPerformed(evt);
@@ -358,6 +411,7 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
 
         btnExcluirPedido.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Eraser.png"))); // NOI18N
         btnExcluirPedido.setText("Excluir");
+        btnExcluirPedido.setEnabled(false);
         btnExcluirPedido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExcluirPedidoActionPerformed(evt);
@@ -420,13 +474,23 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void btnConsultaPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaPedidoActionPerformed
-        // TODO add your handling code here:
+        //COMPARAÇÃO PARA VER SE O PEDIDO DE NUMERO SETADO EXISTE
+        if((daoPedido.consultar(Integer.valueOf(txtNumPedido.getText()))) != null){
+            //O PEDIDO PESQUISADO EXISTE:
+            pedido = daoPedido.consultar(Integer.valueOf(txtNumPedido.getText()));
+            
+            setEnableDadosClienteVendedor(true);
+            
+            
+        }
     }//GEN-LAST:event_btnConsultaPedidoActionPerformed
 
     private void btnConsultaClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaClienteActionPerformed
-        // TODO add your handling code here:
+        if((daoCliente.consultar(String.valueOf(pedido.getCliente())) != null)){
+            cliente = daoCliente.consultar(String.valueOf(pedido.getCliente()));
+        }
     }//GEN-LAST:event_btnConsultaClienteActionPerformed
 
     private void btnConsultaVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaVendedorActionPerformed
@@ -458,8 +522,20 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExcluirPedidoActionPerformed
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
+        conexao.fecharConexao();
         dispose();
     }//GEN-LAST:event_btnSairActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        conexao = new Conexao("BD1611017","BD1611017");
+        conexao.setDriver("oracle.jdbc.driver.OracleDriver");
+        conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
+        daoCliente = new DaoCliente(conexao.conectar());
+    }//GEN-LAST:event_formWindowOpened
+
+    private void txtNumPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNumPedidoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNumPedidoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -496,6 +572,31 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
         });
     }
 
+    
+    
+    
+    
+    
+    
+    private void setEnableDadosClienteVendedor(boolean b){
+        txtCPFCliente.setEnabled(b);
+        btnConsultaCliente.setEnabled(b);
+        txtCliente.setEnabled(b);
+        pnlDadosCli.setEnabled(b);
+        lblCPFCli.setEnabled(b);
+        
+        txtCPFVendedor.setEnabled(b);
+        btnConsultaVendedor.setEnabled(b);
+        txtVendedor.setEnabled(b);
+        pnlDadosVendedor.setEnabled(b);
+        lblCPFVendedor.setEnabled(b);
+    }
+    
+    private void InstanciaPedido(){
+        
+    }
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddProduto;
     private javax.swing.JButton btnAlterarPedido;
@@ -533,4 +634,16 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
     private javax.swing.JTextField txtValorTotal;
     private javax.swing.JTextField txtVendedor;
     // End of variables declaration//GEN-END:variables
+    private Conexao conexao = null;
+    private DaoCliente daoCliente = null;
+    private DaoVendedor daoVendedor = null;
+    private DaoProduto daoProduto = null;
+    private DaoPedido daoPedido = null;
+    private DaoItemPedido daoItemPedido = null;
+    
+    private Cliente cliente = null;
+    private Vendedor vendedor = null;
+    private Pedido pedido = null;
+    private Produto produto = null;
+    private ItemPedido itempedido = null;
 }

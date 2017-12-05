@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 
 import fatec.poo.model.ItemPedido;
+import java.util.ArrayList;
 
 public class DaoItemPedido {
 
@@ -68,7 +69,31 @@ public class DaoItemPedido {
         }
         return (d);
     }    
-     
+     public ArrayList <ItemPedido> consultarPedido (int numeroPedido) {
+         ArrayList <ItemPedido> d = new ArrayList<ItemPedido>();
+         ItemPedido i = null;
+         
+        PreparedStatement ps = null;
+        try {
+            ps = conn.prepareStatement("SELECT * from ITEMPEDIDO where " +
+                                                 "numeropedido = ?");
+            
+            ps.setInt(1, numeroPedido);
+            ResultSet rs = ps.executeQuery();
+           
+            while (rs.next() == true) {
+                i = new ItemPedido (numeroPedido, rs.getInt("qtdeVendida"));
+                i.setProduto(new DaoProduto(conn).consultar(rs.getInt("codigoproduto")));
+                d.add(i);
+            }
+        }
+        catch (SQLException ex) { 
+             System.out.println(ex.toString());   
+        }
+        return (d);
+    }    
+      
+      
      public void excluir(ItemPedido itempedido) {
         PreparedStatement ps = null;
         try {

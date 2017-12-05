@@ -64,4 +64,8 @@ public class Pedido {
         itenspedido.add(i);
         i.setPedido(this);
     }
+
+    public void setItenspedido(ArrayList<ItemPedido> itenspedido) {
+        this.itenspedido = itenspedido;
+    }
 }
