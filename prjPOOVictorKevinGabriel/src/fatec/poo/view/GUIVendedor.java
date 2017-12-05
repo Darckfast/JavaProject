@@ -4,6 +4,7 @@ import fatec.poo.control.Conexao;
 import fatec.poo.control.DaoVendedor;
 import fatec.poo.functions.CPF;
 import fatec.poo.model.Vendedor;
+import java.text.DecimalFormat;
 import javax.swing.JOptionPane;
 
 /**
@@ -453,4 +454,5 @@ public class GUIVendedor extends javax.swing.JFrame {
     private DaoVendedor daoVendedor=null;
     private CPF validacpf=null;
     private Vendedor consulta, vendedor;
+    private DecimalFormat df = new DecimalFormat();
 }

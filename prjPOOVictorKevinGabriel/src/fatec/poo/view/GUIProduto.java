@@ -3,7 +3,7 @@ package fatec.poo.view;
 import fatec.poo.control.Conexao;
 import fatec.poo.control.DaoProduto;
 import fatec.poo.model.Produto;
-import javafx.scene.input.DataFormat;
+import java.text.DecimalFormat;
 import javax.swing.JOptionPane;
 
 /**
@@ -236,7 +236,6 @@ public class GUIProduto extends javax.swing.JFrame {
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         int dialogResult = JOptionPane.showConfirmDialog (null, "Deseja Alterar esse produto?", "", JOptionPane.YES_NO_OPTION);
         if(dialogResult == JOptionPane.YES_OPTION){
-            txtPrecoUni.setText(txtPrecoUni.getText().replace(",", "."));
             daoProduto.alterar(instanciaOjbeto(produto));
             btnConsultar.setEnabled(true);
             btnExcluir.setEnabled(false);
@@ -314,7 +313,7 @@ public class GUIProduto extends javax.swing.JFrame {
         int cod = Integer.valueOf(txtCodigo.getText());
         p = new Produto(cod, txtDescricao.getText());
         p.setEstoqueMin(Integer.valueOf(txtEstoque.getText()));
-        p.setPrecoUnit(Integer.valueOf(txtPrecoUni.getText()));
+        p.setPrecoUnit(Double.valueOf(txtPrecoUni.getText()));
         p.setQtdeDisponivel(Integer.valueOf(txtQtde.getText()));
         
         return (p);
@@ -340,6 +339,6 @@ public class GUIProduto extends javax.swing.JFrame {
     private Conexao conexao=null;
     private DaoProduto daoProduto=null;
     private Produto consulta, produto;
-    private DataFormat df;
+    private DecimalFormat df = new DecimalFormat("#.##");
     
 }
