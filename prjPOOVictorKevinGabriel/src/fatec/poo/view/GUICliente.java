@@ -268,7 +268,7 @@ public class GUICliente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSairActionPerformed
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
-         String cpf = (txtCpf.getText().replace("-","").replace(".",""));
+        String cpf = (txtCpf.getText().replace("-","").replace(".",""));
 
         if(validacpf.isCPF(cpf)){
             if((daoCliente.consultar(cpf) != null)){
@@ -285,7 +285,8 @@ public class GUICliente extends javax.swing.JFrame {
                 txtTelefone.setText(String.valueOf(consulta.getTelefone()));
                 txtCep.setText(String.valueOf(consulta.getCep()));
                 txtLimiteCred.setText(String.valueOf(consulta.getLimiteCred()));
-                lblLimiteDisp.setText(String.valueOf(consulta.getLimiteCred()));
+                lblLimiteDisp.setText(String.valueOf(consulta.getLimiteDisp()));
+                cliente.setLimiteCredAntigo(Double.valueOf(consulta.getLimiteCredAntigo()));
             }else{
                 inverteCampos();
                 btnConsultar.setEnabled(false);
@@ -298,6 +299,7 @@ public class GUICliente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
+        lblLimiteDisp.setText(txtLimiteCred.getText());
         daoCliente.inserir(instanciaOjbeto(cliente));
         btnConsultar.setEnabled(true);
         btnIncluir.setEnabled(false);
@@ -309,12 +311,21 @@ public class GUICliente extends javax.swing.JFrame {
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         int dialogResult = JOptionPane.showConfirmDialog (null, "Deseja Alterar esse registro?", "", JOptionPane.YES_NO_OPTION);
         if(dialogResult == JOptionPane.YES_OPTION){
-            daoCliente.alterar(instanciaOjbeto(cliente));
-            btnConsultar.setEnabled(true);
-            btnExcluir.setEnabled(false);
-            btnAlterar.setEnabled(false);
-            limpaCampos();
-            inverteCampos();
+            double b = consulta.getLimiteCredAntigo(); 
+            double a = Double.valueOf(lblLimiteDisp.getText());
+            double novoLimite = Double.valueOf(txtLimiteCred.getText()) - (b - a);
+            
+            if(novoLimite >= 0){
+                lblLimiteDisp.setText(String.valueOf(novoLimite));
+                daoCliente.alterar(instanciaOjbeto(cliente));
+                btnConsultar.setEnabled(true);
+                btnExcluir.setEnabled(false);
+                btnAlterar.setEnabled(false);
+                limpaCampos();
+                inverteCampos();
+            }else{
+                JOptionPane.showMessageDialog(null, "Limite inferior a débito.");
+            }
         }
         
         

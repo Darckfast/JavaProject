@@ -482,18 +482,20 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
     
     private void btnConsultaPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaPedidoActionPerformed
         //COMPARAÇÃO PARA VER SE O PEDIDO DE NUMERO SETADO EXISTE
-        if((daoPedido.consultar(Integer.valueOf(txtNumPedido.getText()))) != null){
         //O PEDIDO PESQUISADO EXISTE:
+        pedido = null;
+        //System.out.println(pedido.getNumero() + pedido.getDataEmissaoPedido());
+            
+        if(daoPedido.consultar(Integer.valueOf(txtNumPedido.getText())) != null){
             pedido = daoPedido.consultar(Integer.valueOf(txtNumPedido.getText()));
-            txtDataPedido.setText(pedido.getDataPgto());
+            /*txtDataPedido.setText(pedido.getDataPgto());
             txtCPFCliente.setText(pedido.getCliente().getCpf());
             btnConsultaClienteActionPerformed(evt);
             txtCPFVendedor.setText(pedido.getVendedor().getCpf());
             btnConsultaVendedorActionPerformed(evt);    
             btnExcluirPedido.setEnabled(true);
             btnAlterarPedido.setEnabled(true);      
-            carregaTblProduto(pedido);
-            
+            carregaTblProduto(pedido);*/
         }else{
             setEnableDadosClienteVendedor(true);
             setEnableItensPedido(true);
@@ -546,6 +548,8 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
 
     private void btnIncluirPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirPedidoActionPerformed
         // TODO add your handling code here:
+        produto.Estoque(Integer.valueOf(txtQtdeVendida.getText()));
+        /*Retirar do estoque*/
     }//GEN-LAST:event_btnIncluirPedidoActionPerformed
 
     private void btnAlterarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarPedidoActionPerformed
@@ -565,7 +569,7 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
         conexao = new Conexao("BD1611017","BD1611017");
         conexao.setDriver("oracle.jdbc.driver.OracleDriver");
         conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
-        daoCliente = new DaoCliente(conexao.conectar());
+        daoPedido = new DaoPedido(conexao.conectar());
     }//GEN-LAST:event_formWindowOpened
 
     private void txtNumPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNumPedidoActionPerformed
@@ -631,7 +635,7 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
                               String.valueOf(p.getItenspedido().get(i).getProduto().getPrecoUnit()),
                               String.valueOf(qtdvendida),
                               String.valueOf(qtdvendida *(p.getItenspedido().get(i).getProduto().getPrecoUnit()))};
-            modTblProd.addRow(Linha);   
+           // modTblProd.addRow(Linha);   
             }
     }
     
@@ -716,5 +720,5 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
     private Produto produto = null;
     private ItemPedido itempedido = null;
     
-    private DefaultTableModel modTblProd = (DefaultTableModel)tblProduto.getModel();
+   // private DefaultTableModel modTblProd = (DefaultTableModel)tblProduto.getModel();
 }

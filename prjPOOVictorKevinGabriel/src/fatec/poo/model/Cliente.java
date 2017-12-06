@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class Cliente extends Pessoa {
     private double limiteCred;
     private double limiteDisp;
+    private double limiteCredAntigo;
     private ArrayList<Pedido> pedidos;
     
     public Cliente(String cpf, String nome, double limiteCred) {
@@ -34,6 +35,14 @@ public class Cliente extends Pessoa {
     public void addCliente(Pedido p){
         pedidos.add(p);
         p.setCliente(this);
+    }
+
+    public double getLimiteCredAntigo() {
+        return limiteCredAntigo;
+    }
+
+    public void setLimiteCredAntigo(double limiteCredAntigo) {
+        this.limiteCredAntigo = limiteCredAntigo;
     }
 
     

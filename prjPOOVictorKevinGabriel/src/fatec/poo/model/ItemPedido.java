@@ -15,6 +15,7 @@ public class ItemPedido {
         this.qtdeVendida = qtdeVendida;
         produto.setQtdeDisponivel(produto.getQtdeDisponivel()- qtdeVendida);
         pedido.getCliente().setLimiteDisp(pedido.getCliente().getLimiteDisp() - (produto.getPrecoUnit() * qtdeVendida));
+        
     }    
     
     public int getQtdeVendida() {

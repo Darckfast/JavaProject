@@ -46,6 +46,9 @@ public class Produto {
     public void setEstoqueMin(int estoqueMin) {
         this.estoqueMin = estoqueMin;
     }
-    
+
+    public void Estoque(int qtVendida){
+        qtdeDisponivel = qtdeDisponivel - qtVendida;
+    }
     
 }

@@ -101,7 +101,26 @@ public class DaoCliente {
         } catch (SQLException ex) {
              System.out.println(ex.toString());   
         }
+        
     }
+    public Cliente Limite (String cpf) {
+        Cliente d = null;
+       
+        PreparedStatement ps = null;
+        try {
+            ps = conn.prepareStatement("SELECT LIMITEDISP FROM CLIENTE WHERE " +
+                                                 "CPF = ?");
+            
+            ps.setString(1, cpf);
+            ResultSet rs = ps.executeQuery();
+            d.setLimiteCredAntigo(rs.getDouble("LIMITEDISP"));
+           
+        }
+        catch (SQLException ex) { 
+             System.out.println(ex.toString());   
+        }
+        return (d);
+    }   
 }
 
 
