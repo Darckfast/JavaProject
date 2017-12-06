@@ -366,6 +366,7 @@ public class GUICliente extends javax.swing.JFrame {
             }
         });
     }
+ 
     
     private void limpaCampos(){
     txtCep.setText("");

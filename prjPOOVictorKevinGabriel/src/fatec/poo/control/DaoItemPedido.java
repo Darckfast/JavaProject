@@ -68,7 +68,31 @@ public class DaoItemPedido {
              System.out.println(ex.toString());   
         }
         return (d);
+    } 
+     
+     public  ItemPedido consultarProduto (int codigoProduto) {
+        ItemPedido d = null;
+       
+        PreparedStatement ps = null;
+        try {
+            ps = conn.prepareStatement("SELECT * from ITEMPEDIDO where " +
+                                                 "codigoproduto = ?");
+            
+            ps.setInt(1, codigoProduto);
+            ResultSet rs = ps.executeQuery();
+           
+            if (rs.next() == true) {
+                d = new ItemPedido (codigoProduto, rs.getInt("qtdeVendida"));
+                d.setPedido(new DaoPedido(conn).consultar(rs.getInt("numeropedido")));
+                d.setProduto(new DaoProduto(conn).consultar(rs.getInt("codigoproduto")));
+            }
+        }
+        catch (SQLException ex) { 
+             System.out.println(ex.toString());   
+        }
+        return (d);
     }    
+     
      public ArrayList <ItemPedido> consultarPedido (int numeroPedido) {
          ArrayList <ItemPedido> d = new ArrayList<ItemPedido>();
          ItemPedido i = null;

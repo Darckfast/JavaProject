@@ -16,6 +16,8 @@ import fatec.poo.model.ItemPedido;
 import fatec.poo.model.Pedido;
 import fatec.poo.model.Produto;
 import fatec.poo.model.Vendedor;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -68,6 +70,7 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
         btnAddProduto = new javax.swing.JButton();
         btnRemProduto = new javax.swing.JButton();
         btnConsultaProduto = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProduto = new javax.swing.JTable();
         btnIncluirPedido = new javax.swing.JButton();
@@ -320,6 +323,8 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
         tblProduto.setEnabled(false);
         jScrollPane1.setViewportView(tblProduto);
 
+        jScrollPane2.setViewportView(jScrollPane1);
+
         javax.swing.GroupLayout pnlItensLayout = new javax.swing.GroupLayout(pnlItens);
         pnlItens.setLayout(pnlItensLayout);
         pnlItensLayout.setHorizontalGroup(
@@ -343,7 +348,7 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
                                 .addComponent(btnConsultaProduto)
                                 .addGap(18, 18, 18)
                                 .addComponent(txtProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
                                 .addComponent(lblQuantidade)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtQtdeVendida, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -356,9 +361,9 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
                                     .addComponent(lblTotalItens))
                                 .addGroup(pnlItensLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtValorTotal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtTotalItens, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jScrollPane1))
-                        .addContainerGap())))
+                                    .addComponent(txtTotalItens, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addContainerGap())
+                    .addComponent(jScrollPane2)))
         );
 
         pnlItensLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnAddProduto, btnRemProduto});
@@ -379,8 +384,8 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
                     .addComponent(btnAddProduto)
                     .addComponent(btnRemProduto))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
                 .addGroup(pnlItensLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblTotalPedido))
@@ -478,31 +483,61 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
     private void btnConsultaPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaPedidoActionPerformed
         //COMPARAÇÃO PARA VER SE O PEDIDO DE NUMERO SETADO EXISTE
         if((daoPedido.consultar(Integer.valueOf(txtNumPedido.getText()))) != null){
-            //O PEDIDO PESQUISADO EXISTE:
+        //O PEDIDO PESQUISADO EXISTE:
             pedido = daoPedido.consultar(Integer.valueOf(txtNumPedido.getText()));
+            txtDataPedido.setText(pedido.getDataPgto());
+            txtCPFCliente.setText(pedido.getCliente().getCpf());
+            btnConsultaClienteActionPerformed(evt);
+            txtCPFVendedor.setText(pedido.getVendedor().getCpf());
+            btnConsultaVendedorActionPerformed(evt);    
+            btnExcluirPedido.setEnabled(true);
+            btnAlterarPedido.setEnabled(true);      
+            carregaTblProduto(pedido);
             
+        }else{
             setEnableDadosClienteVendedor(true);
-            
-            
+            setEnableItensPedido(true);
+            btnIncluirPedido.setEnabled(true);
         }
     }//GEN-LAST:event_btnConsultaPedidoActionPerformed
 
     private void btnConsultaClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaClienteActionPerformed
-        if((daoCliente.consultar(String.valueOf(pedido.getCliente())) != null)){
+        String cpf = (txtCPFCliente.getText().replace("-","").replace(".",""));
+        if((daoCliente.consultar(cpf)) != null){
             cliente = daoCliente.consultar(String.valueOf(pedido.getCliente()));
+            txtCliente.setText(cliente.getNome());
+        }else{
+            JOptionPane.showMessageDialog(this,"Cliente não cadastrado!","Dado Inválido",JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnConsultaClienteActionPerformed
 
     private void btnConsultaVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaVendedorActionPerformed
-        // TODO add your handling code here:
+        String cpf = (txtCPFVendedor.getText().replace("-","").replace(".",""));
+        if((daoVendedor.consultar(cpf)) != null){
+            vendedor = daoVendedor.consultar(String.valueOf(pedido.getVendedor()));
+            txtVendedor.setText(vendedor.getNome());
+        }else{
+            JOptionPane.showMessageDialog(this,"Vendedor não cadastrado!","Dado Inválido",JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnConsultaVendedorActionPerformed
 
     private void btnConsultaProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaProdutoActionPerformed
-        // TODO add your handling code here:
+        if((daoProduto.consultar(Integer.parseInt(txtCodProduto.getText()))) != null){
+            produto = daoProduto.consultar(Integer.parseInt(txtCodProduto.getText()));
+            txtProduto.setText(produto.getDescricao());
+            txtQtdeVendida.setText(String.valueOf(daoItemPedido.consultarProduto(Integer.parseInt(txtCodProduto.getText())).getQtdeVendida()));
+        }else{
+            JOptionPane.showMessageDialog(this,"Produto não cadastrado!","Dado Inválido",JOptionPane.WARNING_MESSAGE);
+        }
+        
     }//GEN-LAST:event_btnConsultaProdutoActionPerformed
 
     private void btnAddProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddProdutoActionPerformed
-        // TODO add your handling code here:
+        if(Integer.parseInt(txtQtdeVendida.getText()) >= produto.getQtdeDisponivel()){
+            addTblProduto(pedido);
+        }else{
+            JOptionPane.showMessageDialog(this,"Quantidade não disponível em estoque!","Dado Inválido",JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnAddProdutoActionPerformed
 
     private void btnRemProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemProdutoActionPerformed
@@ -576,6 +611,29 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
     
     
     
+    private void addTblProduto(Pedido p){
+          
+        ItemPedido ip = new ItemPedido(produto.getCodigo(),Integer.parseInt(txtQtdeVendida.getText()));
+        ip.setPedido(pedido);
+        ip.setProduto(produto);       
+        p.addItensPedido(ip);
+        carregaTblProduto(p);
+    }
+    
+    private void carregaTblProduto(Pedido p){
+        int i, n = p.getItenspedido().size();
+            
+        for(i=0;i<n;i++){
+           
+            int qtdvendida = (daoItemPedido.consultarProduto(Integer.parseInt(txtCodProduto.getText())).getQtdeVendida());
+            String Linha[] = {String.valueOf(p.getItenspedido().get(i).getProduto().getCodigo()),
+                                             p.getItenspedido().get(i).getProduto().getDescricao(),
+                              String.valueOf(p.getItenspedido().get(i).getProduto().getPrecoUnit()),
+                              String.valueOf(qtdvendida),
+                              String.valueOf(qtdvendida *(p.getItenspedido().get(i).getProduto().getPrecoUnit()))};
+            modTblProd.addRow(Linha);   
+            }
+    }
     
     
     private void setEnableDadosClienteVendedor(boolean b){
@@ -592,8 +650,18 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
         lblCPFVendedor.setEnabled(b);
     }
     
-    private void InstanciaPedido(){
-        
+    private void setEnableItensPedido(boolean b){
+        pnlItens.setEnabled(b);
+        lblCodProd.setEnabled(b);
+        txtCodProduto.setEnabled(b);
+        btnConsultaProduto.setEnabled(b);
+        txtProduto.setEnabled(b);
+        lblQuantidade.setEnabled(b);
+        txtQtdeVendida.setEnabled(b);
+        lblTotalItens.setEnabled(b);
+        lblTotalPedido.setEnabled(b);
+        txtTotalItens.setEnabled(b);
+        txtValorTotal.setEnabled(b);        
     }
     
     
@@ -609,6 +677,7 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
     private javax.swing.JButton btnRemProduto;
     private javax.swing.JButton btnSair;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblCPFCli;
     private javax.swing.JLabel lblCPFVendedor;
     private javax.swing.JLabel lblCodProd;
@@ -646,4 +715,6 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
     private Pedido pedido = null;
     private Produto produto = null;
     private ItemPedido itempedido = null;
+    
+    private DefaultTableModel modTblProd = (DefaultTableModel)tblProduto.getModel();
 }
