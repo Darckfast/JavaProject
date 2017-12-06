@@ -68,4 +68,10 @@ public class Pedido {
     public void setItenspedido(ArrayList<ItemPedido> itenspedido) {
         this.itenspedido = itenspedido;
     }
+
+    public ArrayList<ItemPedido> getItenspedido() {
+        return itenspedido;
+    }
+    
+    
 }
