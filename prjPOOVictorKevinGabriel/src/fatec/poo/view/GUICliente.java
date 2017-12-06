@@ -137,7 +137,7 @@ public class GUICliente extends javax.swing.JFrame {
             }
         });
 
-        cmbUf.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SP", "RJ" }));
+        cmbUf.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA", "MG", "MS", "MT", "PA", "PB", "PE", "PI", "PR", "RJ", "RN", "RO", "RR", "RS", "SC", "SE", "SP", "TO" }));
         cmbUf.setEnabled(false);
 
         lblLimiteDisp.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -174,7 +174,6 @@ public class GUICliente extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 482, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, 482, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(txtCidade, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -185,7 +184,8 @@ public class GUICliente extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(txtDdd, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(txtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -268,9 +268,9 @@ public class GUICliente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSairActionPerformed
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+         String cpf = (txtCpf.getText().replace("-","").replace(".",""));
 
-        //if(validacpf.validarCpf(txtCpf.getText())){
-            String cpf = (txtCpf.getText().replace("-","").replace(".",""));
+        if(validacpf.isCPF(cpf)){
             if((daoCliente.consultar(cpf) != null)){
                 consulta = daoCliente.consultar(cpf);
                 inverteCampos();
@@ -285,15 +285,15 @@ public class GUICliente extends javax.swing.JFrame {
                 txtTelefone.setText(String.valueOf(consulta.getTelefone()));
                 txtCep.setText(String.valueOf(consulta.getCep()));
                 txtLimiteCred.setText(String.valueOf(consulta.getLimiteCred()));
-                lblLimiteDisp.setText(String.valueOf(consulta.getLimiteDisp()));
+                lblLimiteDisp.setText(String.valueOf(consulta.getLimiteCred()));
             }else{
                 inverteCampos();
                 btnConsultar.setEnabled(false);
                 btnIncluir.setEnabled(true);
             }
-       /* }else{
+        }else{
            JOptionPane.showMessageDialog(null, "CPF Inválido.");
-        }*/
+        }
         
     }//GEN-LAST:event_btnConsultarActionPerformed
 
@@ -439,6 +439,6 @@ public class GUICliente extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
     private Conexao conexao=null;
     private DaoCliente daoCliente=null;
-    private CPF validacpf=null;
+    private CPF validacpf = null;
     private Cliente consulta, cliente;
 }

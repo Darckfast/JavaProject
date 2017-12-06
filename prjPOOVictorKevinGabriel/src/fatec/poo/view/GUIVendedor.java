@@ -209,7 +209,7 @@ public class GUIVendedor extends javax.swing.JFrame {
                                                 .addComponent(txtSalariobase, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addComponent(txtEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(txtCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(txtCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addGap(0, 0, Short.MAX_VALUE)))))))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
@@ -289,7 +289,7 @@ public class GUIVendedor extends javax.swing.JFrame {
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
         String cpf = (txtCpf.getText().replace("-","").replace(".",""));
-       // if(validacpf.validarCpf(txtCpf.getText())){
+        if(validacpf.isCPF(cpf)){
             //String cpf = (txtCpf.getText().replace("-","").replace(".",""));
             if((daoVendedor.consultar(cpf) != null)){
                 consulta = daoVendedor.consultar(cpf);
@@ -311,9 +311,9 @@ public class GUIVendedor extends javax.swing.JFrame {
                 btnConsultar.setEnabled(false);
                 btnIncluir.setEnabled(true);
             }
-       /* }else{
+        }else{
            JOptionPane.showMessageDialog(null, "CPF Inválido.");
-        }*/
+        }
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
