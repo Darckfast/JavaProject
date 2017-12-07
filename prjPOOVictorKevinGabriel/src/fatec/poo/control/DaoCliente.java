@@ -82,6 +82,7 @@ public class DaoCliente {
             d.setTelefone(rs.getString("telefone"));
             d.setLimiteDisp(rs.getDouble("limitedisp"));
             d.setUf(rs.getString("uf"));
+            d.setLimiteCredAntigo(rs.getDouble("limiteCred"));
             }
         }
         catch (SQLException ex) { 

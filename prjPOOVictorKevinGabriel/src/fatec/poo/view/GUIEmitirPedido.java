@@ -488,14 +488,14 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
             
         if(daoPedido.consultar(Integer.valueOf(txtNumPedido.getText())) != null){
             pedido = daoPedido.consultar(Integer.valueOf(txtNumPedido.getText()));
-            /*txtDataPedido.setText(pedido.getDataPgto());
+            txtDataPedido.setText(pedido.getDataPgto());
             txtCPFCliente.setText(pedido.getCliente().getCpf());
             btnConsultaClienteActionPerformed(evt);
             txtCPFVendedor.setText(pedido.getVendedor().getCpf());
             btnConsultaVendedorActionPerformed(evt);    
             btnExcluirPedido.setEnabled(true);
             btnAlterarPedido.setEnabled(true);      
-            carregaTblProduto(pedido);*/
+            carregaTblProduto(pedido);
         }else{
             setEnableDadosClienteVendedor(true);
             setEnableItensPedido(true);

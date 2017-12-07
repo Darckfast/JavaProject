@@ -286,7 +286,7 @@ public class GUICliente extends javax.swing.JFrame {
                 txtCep.setText(String.valueOf(consulta.getCep()));
                 txtLimiteCred.setText(String.valueOf(consulta.getLimiteCred()));
                 lblLimiteDisp.setText(String.valueOf(consulta.getLimiteDisp()));
-                cliente.setLimiteCredAntigo(Double.valueOf(consulta.getLimiteCredAntigo()));
+                //cliente.setLimiteCredAntigo(Double.valueOf(consulta.getLimiteCredAntigo()));
             }else{
                 inverteCampos();
                 btnConsultar.setEnabled(false);
