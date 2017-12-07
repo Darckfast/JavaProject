@@ -486,35 +486,40 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
         //COMPARAÇÃO PARA VER SE O PEDIDO DE NUMERO SETADO EXISTE
         //O PEDIDO PESQUISADO EXISTE:
         pedido = null;
-        //System.out.println(pedido.getNumero() + pedido.getDataEmissaoPedido());
-            
-        if(daoPedido.consultar(Integer.valueOf(txtNumPedido.getText())) != null){
-            pedido = daoPedido.consultar(Integer.valueOf(txtNumPedido.getText()));
-            txtCPFCliente.setText(pedido.getCliente().getCpf());
-            btnConsultaClienteActionPerformed(evt);
-            txtCPFVendedor.setText(pedido.getVendedor().getCpf());
-            btnConsultaVendedorActionPerformed(evt);
-            //SETAR DATA
-            btnExcluirPedido.setEnabled(true);
-            btnAlterarPedido.setEnabled(true);
-            setEnableItensPedido(true);
-            
-            int i, n = pedido.getItenspedido().size();
-            for(i=0;i<n;i++){
-                
-                String Linha[] = {String.valueOf(pedido.getItenspedido().get(i).getProduto().getCodigo()),
-                                 String.valueOf(pedido.getItenspedido().get(i).getProduto().getDescricao()),
-                                 String.valueOf(pedido.getItenspedido().get(i).getProduto().getPrecoUnit()),
-                                 String.valueOf(pedido.getItenspedido().get(i).getQtdeVendida()),
-                                 String.valueOf(pedido.getItenspedido().get(i).getProduto().getPrecoUnit() * pedido.getItenspedido().get(i).getQtdeVendida())
-                                };
-                modTblProd.addRow(Linha);
+        try{
+            Integer.parseInt(txtNumPedido.getText());
+            int cod = (Integer.valueOf(txtNumPedido.getText()));
+            //System.out.println(pedido.getNumero() + pedido.getDataEmissaoPedido());
+            if(daoPedido.consultar(Integer.valueOf(txtNumPedido.getText())) != null){
+                pedido = daoPedido.consultar(Integer.valueOf(txtNumPedido.getText()));
+                txtCPFCliente.setText(pedido.getCliente().getCpf());
+                btnConsultaClienteActionPerformed(evt);
+                txtCPFVendedor.setText(pedido.getVendedor().getCpf());
+                btnConsultaVendedorActionPerformed(evt);
+                //SETAR DATA
+                btnExcluirPedido.setEnabled(true);
+                btnAlterarPedido.setEnabled(true);
+                setEnableItensPedido(true);
+
+                int i, n = pedido.getItenspedido().size();
+                for(i=0;i<n;i++){
+
+                    String Linha[] = {String.valueOf(pedido.getItenspedido().get(i).getProduto().getCodigo()),
+                                     String.valueOf(pedido.getItenspedido().get(i).getProduto().getDescricao()),
+                                     String.valueOf(pedido.getItenspedido().get(i).getProduto().getPrecoUnit()),
+                                     String.valueOf(pedido.getItenspedido().get(i).getQtdeVendida()),
+                                     String.valueOf(pedido.getItenspedido().get(i).getProduto().getPrecoUnit() * pedido.getItenspedido().get(i).getQtdeVendida())
+                                    };
+                    modTblProd.addRow(Linha);
+                }
+                calcTotais();
+            }else{
+                setEnableDadosClienteVendedor(true);
+                setEnableItensPedido(true);
+                btnIncluirPedido.setEnabled(true);
             }
-            calcTotais();
-        }else{
-            setEnableDadosClienteVendedor(true);
-            setEnableItensPedido(true);
-            btnIncluirPedido.setEnabled(true);
+        }catch(NumberFormatException e) {
+           JOptionPane.showMessageDialog(null, "Código Inválido.");
         }
     }//GEN-LAST:event_btnConsultaPedidoActionPerformed
 
@@ -539,36 +544,52 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
     }//GEN-LAST:event_btnConsultaVendedorActionPerformed
 
     private void btnConsultaProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaProdutoActionPerformed
-        if((daoProduto.consultar(Integer.parseInt(txtCodProduto.getText()))) != null){
-            produto = daoProduto.consultar(Integer.parseInt(txtCodProduto.getText()));
-            txtProduto.setText(produto.getDescricao());
-            btnAddProduto.setEnabled(true);
-            btnRemProduto.setEnabled(true);
-            txtProduto.setEnabled(true);
-            txtQtdeVendida.setEnabled(true);
-        }else{
-            JOptionPane.showMessageDialog(this,"Produto não cadastrado!","Dado Inválido",JOptionPane.WARNING_MESSAGE);
+        try{
+            Integer.parseInt(txtNumPedido.getText());
+            int cod = (Integer.valueOf(txtNumPedido.getText()));
+            if((daoProduto.consultar(Integer.parseInt(txtCodProduto.getText()))) != null){
+                produto = daoProduto.consultar(Integer.parseInt(txtCodProduto.getText()));
+                txtProduto.setText(produto.getDescricao());
+                btnAddProduto.setEnabled(true);
+                btnRemProduto.setEnabled(true);
+                txtProduto.setEnabled(true);
+                txtQtdeVendida.setEnabled(true);
+            }else{
+                JOptionPane.showMessageDialog(this,"Produto não cadastrado!","Dado Inválido",JOptionPane.WARNING_MESSAGE);
+            }
+        }catch(NumberFormatException e) {
+           JOptionPane.showMessageDialog(null, "Código Inválido.");
         }
-        
     }//GEN-LAST:event_btnConsultaProdutoActionPerformed
 
     private void btnAddProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddProdutoActionPerformed
-        if(Integer.parseInt(txtQtdeVendida.getText()) <= produto.getQtdeDisponivel()){
-            
-             int n = modTblProd.getRowCount() + 1;
-             String Linha[] = {String.valueOf(produto.getCodigo()),
-                                 String.valueOf(produto.getDescricao()),
-                                 String.valueOf(produto.getPrecoUnit()),
-                                 String.valueOf(txtQtdeVendida.getText()),
-                                 String.valueOf(Integer.parseInt(txtQtdeVendida.getText()) * produto.getPrecoUnit())
-                                };
-                modTblProd.addRow(Linha);
-            produto.tiraEstoque(Integer.valueOf(txtQtdeVendida.getText()));
-            
-            calcTotais();
-        }else{
-            JOptionPane.showMessageDialog(this,"Quantidade não disponível em estoque!","Dado Inválido",JOptionPane.WARNING_MESSAGE);
+        //if(txtQtdeVendida.getText().trim() != "" ){
+            try{
+                Integer.parseInt(txtNumPedido.getText());
+                int cod = (Integer.valueOf(txtNumPedido.getText()));
+                if(Integer.parseInt(txtQtdeVendida.getText()) <= produto.getQtdeDisponivel()){
+
+                     int n = modTblProd.getRowCount() + 1;
+                     String Linha[] = {String.valueOf(produto.getCodigo()),
+                                         String.valueOf(produto.getDescricao()),
+                                         String.valueOf(produto.getPrecoUnit()),
+                                         String.valueOf(txtQtdeVendida.getText()),
+                                         String.valueOf(Integer.parseInt(txtQtdeVendida.getText()) * produto.getPrecoUnit())
+                                        };
+                        modTblProd.addRow(Linha);
+                    produto.tiraEstoque(Integer.valueOf(txtQtdeVendida.getText()));
+
+                    calcTotais();
+                }else{
+                    JOptionPane.showMessageDialog(this,"Quantidade não disponível em estoque!","Dado Inválido",JOptionPane.WARNING_MESSAGE);
+                }
+            }catch(NumberFormatException e) {
+           JOptionPane.showMessageDialog(null, "Quantiedade Inválida.");
         }
+    /*}else{
+           JOptionPane.showMessageDialog(null, "Insira uma quantiedade.");
+
+        }   */
     }//GEN-LAST:event_btnAddProdutoActionPerformed
 
     private void btnRemProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemProdutoActionPerformed
