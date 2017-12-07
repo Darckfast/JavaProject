@@ -106,8 +106,8 @@ public class DaoItemPedido {
             ResultSet rs = ps.executeQuery();
            
             while (rs.next() == true) {
-                i = new ItemPedido (numeroPedido, rs.getInt("qtdeVendida"));
-                i.setProduto(new DaoProduto(conn).consultar(rs.getInt("codigoproduto")));
+                i = new ItemPedido (numeroPedido, rs.getInt("QTDEVENDA"));
+                i.setProduto(new DaoProduto(conn).consultar(rs.getInt("CODIGOPRODUTO")));
                 d.add(i);
             }
         }

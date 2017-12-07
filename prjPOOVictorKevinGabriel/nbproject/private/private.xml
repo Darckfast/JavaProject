@@ -5,13 +5,6 @@
         <group name="Aula">
             <file>file:/root/POO/prjPOO/src/Produto.java</file>
         </group>
-        <group>
-            <file>file:/root/Javaproject/prjPOOVictorKevinGabriel/src/fatec/poo/control/DaoPedido.java</file>
-            <file>file:/root/Javaproject/prjPOOVictorKevinGabriel/src/fatec/poo/control/DaoItemPedido.java</file>
-            <file>file:/root/Javaproject/prjPOOVictorKevinGabriel/src/fatec/poo/view/GUICliente.java</file>
-            <file>file:/root/Javaproject/prjPOOVictorKevinGabriel/src/fatec/poo/view/GUIEmitirPedido.java</file>
-            <file>file:/root/Javaproject/prjPOOVictorKevinGabriel/src/fatec/poo/control/DaoCliente.java</file>
-            <file>file:/root/Javaproject/prjPOOVictorKevinGabriel/src/fatec/poo/model/Pedido.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

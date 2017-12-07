@@ -16,6 +16,9 @@ import fatec.poo.model.ItemPedido;
 import fatec.poo.model.Pedido;
 import fatec.poo.model.Produto;
 import fatec.poo.model.Vendedor;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -30,6 +33,7 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
      */
     public GUIEmitirPedido() {
         initComponents();
+        modTblProd = (DefaultTableModel)tblProduto.getModel();
     }
 
     /**
@@ -99,11 +103,8 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
             }
         });
 
-        try {
-            txtDataPedido.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
+        txtDataPedido.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+        txtDataPedido.setEnabled(false);
 
         btnConsultaPedido.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/pesq.png"))); // NOI18N
         btnConsultaPedido.addActionListener(new java.awt.event.ActionListener() {
@@ -132,7 +133,7 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
         pnlPedidoLayout.setVerticalGroup(
             pnlPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlPedidoLayout.createSequentialGroup()
-                .addContainerGap(12, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(pnlPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(txtDataPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblData)
@@ -267,8 +268,10 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
 
         txtQtdeVendida.setEnabled(false);
 
+        txtValorTotal.setEditable(false);
         txtValorTotal.setEnabled(false);
 
+        txtTotalItens.setEditable(false);
         txtTotalItens.setEnabled(false);
 
         btnAddProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/add.png"))); // NOI18N
@@ -320,7 +323,6 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        tblProduto.setEnabled(false);
         jScrollPane1.setViewportView(tblProduto);
 
         jScrollPane2.setViewportView(jScrollPane1);
@@ -488,14 +490,27 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
             
         if(daoPedido.consultar(Integer.valueOf(txtNumPedido.getText())) != null){
             pedido = daoPedido.consultar(Integer.valueOf(txtNumPedido.getText()));
-            txtDataPedido.setText(pedido.getDataPgto());
             txtCPFCliente.setText(pedido.getCliente().getCpf());
             btnConsultaClienteActionPerformed(evt);
             txtCPFVendedor.setText(pedido.getVendedor().getCpf());
-            btnConsultaVendedorActionPerformed(evt);    
+            btnConsultaVendedorActionPerformed(evt);
+            //SETAR DATA
             btnExcluirPedido.setEnabled(true);
-            btnAlterarPedido.setEnabled(true);      
-            carregaTblProduto(pedido);
+            btnAlterarPedido.setEnabled(true);
+            setEnableItensPedido(true);
+            
+            int i, n = pedido.getItenspedido().size();
+            for(i=0;i<n;i++){
+                
+                String Linha[] = {String.valueOf(pedido.getItenspedido().get(i).getProduto().getCodigo()),
+                                 String.valueOf(pedido.getItenspedido().get(i).getProduto().getDescricao()),
+                                 String.valueOf(pedido.getItenspedido().get(i).getProduto().getPrecoUnit()),
+                                 String.valueOf(pedido.getItenspedido().get(i).getQtdeVendida()),
+                                 String.valueOf(pedido.getItenspedido().get(i).getProduto().getPrecoUnit() * pedido.getItenspedido().get(i).getQtdeVendida())
+                                };
+                modTblProd.addRow(Linha);
+            }
+            calcTotais();
         }else{
             setEnableDadosClienteVendedor(true);
             setEnableItensPedido(true);
@@ -506,7 +521,7 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
     private void btnConsultaClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaClienteActionPerformed
         String cpf = (txtCPFCliente.getText().replace("-","").replace(".",""));
         if((daoCliente.consultar(cpf)) != null){
-            cliente = daoCliente.consultar(String.valueOf(pedido.getCliente()));
+            cliente = daoCliente.consultar(cpf);
             txtCliente.setText(cliente.getNome());
         }else{
             JOptionPane.showMessageDialog(this,"Cliente não cadastrado!","Dado Inválido",JOptionPane.WARNING_MESSAGE);
@@ -516,7 +531,7 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
     private void btnConsultaVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaVendedorActionPerformed
         String cpf = (txtCPFVendedor.getText().replace("-","").replace(".",""));
         if((daoVendedor.consultar(cpf)) != null){
-            vendedor = daoVendedor.consultar(String.valueOf(pedido.getVendedor()));
+            vendedor = daoVendedor.consultar(cpf);
             txtVendedor.setText(vendedor.getNome());
         }else{
             JOptionPane.showMessageDialog(this,"Vendedor não cadastrado!","Dado Inválido",JOptionPane.WARNING_MESSAGE);
@@ -527,7 +542,10 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
         if((daoProduto.consultar(Integer.parseInt(txtCodProduto.getText()))) != null){
             produto = daoProduto.consultar(Integer.parseInt(txtCodProduto.getText()));
             txtProduto.setText(produto.getDescricao());
-            txtQtdeVendida.setText(String.valueOf(daoItemPedido.consultarProduto(Integer.parseInt(txtCodProduto.getText())).getQtdeVendida()));
+            btnAddProduto.setEnabled(true);
+            btnRemProduto.setEnabled(true);
+            txtProduto.setEnabled(true);
+            txtQtdeVendida.setEnabled(true);
         }else{
             JOptionPane.showMessageDialog(this,"Produto não cadastrado!","Dado Inválido",JOptionPane.WARNING_MESSAGE);
         }
@@ -535,21 +553,37 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
     }//GEN-LAST:event_btnConsultaProdutoActionPerformed
 
     private void btnAddProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddProdutoActionPerformed
-        if(Integer.parseInt(txtQtdeVendida.getText()) >= produto.getQtdeDisponivel()){
-            addTblProduto(pedido);
+        if(Integer.parseInt(txtQtdeVendida.getText()) <= produto.getQtdeDisponivel()){
+            
+             int n = modTblProd.getRowCount() + 1;
+             String Linha[] = {String.valueOf(produto.getCodigo()),
+                                 String.valueOf(produto.getDescricao()),
+                                 String.valueOf(produto.getPrecoUnit()),
+                                 String.valueOf(txtQtdeVendida.getText()),
+                                 String.valueOf(Integer.parseInt(txtQtdeVendida.getText()) * produto.getPrecoUnit())
+                                };
+                modTblProd.addRow(Linha);
+            produto.tiraEstoque(Integer.valueOf(txtQtdeVendida.getText()));
+            
+            calcTotais();
         }else{
             JOptionPane.showMessageDialog(this,"Quantidade não disponível em estoque!","Dado Inválido",JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnAddProdutoActionPerformed
 
     private void btnRemProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemProdutoActionPerformed
-        // TODO add your handling code here:
+       if(tblProduto.getSelectedRow() != -1){
+           modTblProd.removeRow(tblProduto.getSelectedRow());
+           calcTotais();
+           produto.poeEstoque(Integer.valueOf(txtQtdeVendida.getText()));
+       }else{
+            JOptionPane.showMessageDialog(this,"Seleciona uma linha cara!","Dado Inválido",JOptionPane.WARNING_MESSAGE);
+           
+       }
     }//GEN-LAST:event_btnRemProdutoActionPerformed
 
     private void btnIncluirPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirPedidoActionPerformed
         // TODO add your handling code here:
-        produto.Estoque(Integer.valueOf(txtQtdeVendida.getText()));
-        /*Retirar do estoque*/
     }//GEN-LAST:event_btnIncluirPedidoActionPerformed
 
     private void btnAlterarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarPedidoActionPerformed
@@ -570,6 +604,10 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
         conexao.setDriver("oracle.jdbc.driver.OracleDriver");
         conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
         daoPedido = new DaoPedido(conexao.conectar());
+        daoCliente = new DaoCliente(conexao.conectar());
+        daoVendedor = new DaoVendedor(conexao.conectar());
+        daoItemPedido = new DaoItemPedido(conexao.conectar());
+        daoProduto = new DaoProduto(conexao.conectar());
     }//GEN-LAST:event_formWindowOpened
 
     private void txtNumPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNumPedidoActionPerformed
@@ -610,35 +648,20 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
             }
         });
     }
-
     
-    
-    
-    
-    private void addTblProduto(Pedido p){
-          
-        ItemPedido ip = new ItemPedido(produto.getCodigo(),Integer.parseInt(txtQtdeVendida.getText()));
-        ip.setPedido(pedido);
-        ip.setProduto(produto);       
-        p.addItensPedido(ip);
-        carregaTblProduto(p);
+    private void calcTotais(){
+        int qtdvendida = 0;
+        double valortotal = 0;
+        
+        for(int i=0; i < modTblProd.getRowCount(); i++)
+        {
+            qtdvendida += Integer.parseInt((modTblProd.getValueAt(i, 3)+""));
+            valortotal += Double.parseDouble((modTblProd.getValueAt(i, 4)+""));
+        }
+        
+        txtTotalItens.setText(String.valueOf(qtdvendida));
+        txtValorTotal.setText(String.valueOf(valortotal));
     }
-    
-    private void carregaTblProduto(Pedido p){
-        int i, n = p.getItenspedido().size();
-            
-        for(i=0;i<n;i++){
-           
-            int qtdvendida = (daoItemPedido.consultarProduto(Integer.parseInt(txtCodProduto.getText())).getQtdeVendida());
-            String Linha[] = {String.valueOf(p.getItenspedido().get(i).getProduto().getCodigo()),
-                                             p.getItenspedido().get(i).getProduto().getDescricao(),
-                              String.valueOf(p.getItenspedido().get(i).getProduto().getPrecoUnit()),
-                              String.valueOf(qtdvendida),
-                              String.valueOf(qtdvendida *(p.getItenspedido().get(i).getProduto().getPrecoUnit()))};
-           // modTblProd.addRow(Linha);   
-            }
-    }
-    
     
     private void setEnableDadosClienteVendedor(boolean b){
         txtCPFCliente.setEnabled(b);
@@ -659,9 +682,9 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
         lblCodProd.setEnabled(b);
         txtCodProduto.setEnabled(b);
         btnConsultaProduto.setEnabled(b);
-        txtProduto.setEnabled(b);
+//        txtProduto.setEnabled(b);
         lblQuantidade.setEnabled(b);
-        txtQtdeVendida.setEnabled(b);
+//        txtQtdeVendida.setEnabled(b);
         lblTotalItens.setEnabled(b);
         lblTotalPedido.setEnabled(b);
         txtTotalItens.setEnabled(b);
@@ -720,5 +743,5 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
     private Produto produto = null;
     private ItemPedido itempedido = null;
     
-   // private DefaultTableModel modTblProd = (DefaultTableModel)tblProduto.getModel();
+    private DefaultTableModel modTblProd = null;
 }
