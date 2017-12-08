@@ -578,7 +578,8 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
                                         };
                         modTblProd.addRow(Linha);
                     produto.tiraEstoque(Integer.valueOf(txtQtdeVendida.getText()));
-
+                       
+                    
                     calcTotais();
                 }else{
                     JOptionPane.showMessageDialog(this,"Quantidade não disponível em estoque!","Dado Inválido",JOptionPane.WARNING_MESSAGE);
@@ -604,7 +605,8 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRemProdutoActionPerformed
 
     private void btnIncluirPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirPedidoActionPerformed
-        // TODO add your handling code here:
+        
+        
     }//GEN-LAST:event_btnIncluirPedidoActionPerformed
 
     private void btnAlterarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarPedidoActionPerformed
@@ -612,7 +614,8 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAlterarPedidoActionPerformed
 
     private void btnExcluirPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirPedidoActionPerformed
-        // TODO add your handling code here:
+        daoPedido.excluir(pedido);
+        
     }//GEN-LAST:event_btnExcluirPedidoActionPerformed
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed

@@ -12,6 +12,7 @@ import fatec.poo.model.Produto;
 import fatec.poo.model.Vendedor;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 public class DaoPedido {
 
@@ -96,11 +97,24 @@ public class DaoPedido {
      public void excluir(Pedido pedido) {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("DELETE FROM PEDIDO where numero = ?");
+            for(ItemPedido ip : pedido.getItenspedido()){
+                ps = conn.prepareStatement("UPDATE PRODUTO set QTDEDISPONIVEL = QTDEDISPONIVEL + ? WHERE CODIGO = ?");
+                ps.setInt(1, ip.getQtdeVendida());
+                ps.setInt(2, ip.getProduto().getCodigo());   
+                ps.execute();
+                
+                ps = conn.prepareStatement("UPDATE CLIENTE set LIMITEDISP = LIMITEDISP + ? * ? WHERE CPF = ?");
+                ps.setInt(1, ip.getQtdeVendida());
+                ps.setDouble(2, ip.getProduto().getPrecoUnit());
+                ps.setString(3, ip.getPedido().getCliente().getCpf());
+
+            }
             
+            ps = conn.prepareStatement("DELETE FROM PEDIDO where numero = ?");
             ps.setInt(1, pedido.getNumero());
-                      
             ps.execute();
+            
+            
         } catch (SQLException ex) {
              System.out.println(ex.toString());   
         }
