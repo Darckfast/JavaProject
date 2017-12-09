@@ -23,10 +23,24 @@ public class DaoPedido {
     }
     
     public void inserir(Pedido pedido) {
+        DaoItemPedido daoItemPedido = new DaoItemPedido(conn);
         PreparedStatement ps = null;
         try {
+            /*for(ItemPedido ip : pedido.getItenspedido()){
+                ps = conn.prepareStatement("UPDATE PRODUTO set QTDEDISPONIVEL = QTDEDISPONIVEL - ? WHERE CODIGO = ?");
+                ps.setInt(1, ip.getQtdeVendida());
+                ps.setInt(2, ip.getProduto().getCodigo());   
+                ps.execute();
+                
+                ps = conn.prepareStatement("UPDATE CLIENTE set LIMITEDISP = LIMITEDISP - ? * ? WHERE CPF = ?");
+                ps.setInt(1, ip.getQtdeVendida());
+                ps.setDouble(2, ip.getProduto().getPrecoUnit());
+                ps.setString(3, ip.getPedido().getCliente().getCpf());
+
+            }*/
+            
             ps = conn.prepareStatement("INSERT INTO PEDIDO" + 
-                                                        "(numero, dataEmissaoPedido,dataPgto,status,cliente,vendedor)" + 
+                                                        "(numero, TO_DATE(dataEmissaoPedido,'DD-MM-YYY'),dataPgto,status,cpfcliente,cpfvendedor)" + 
                                                         "VALUES(?,?,?,?,?,?)");
             ps.setInt(1, pedido.getNumero());
             ps.setString(2, pedido.getDataEmissaoPedido());
@@ -34,8 +48,14 @@ public class DaoPedido {
             ps.setBoolean(4, pedido.getStatus());
             ps.setString(5, pedido.getCliente().getCpf());
             ps.setString(6, pedido.getVendedor().getCpf());
-            
             ps.execute();
+            Integer cont = 0;
+            
+            /*while (cont < pedido.getItenspedido().size()) {
+                daoItemPedido.inserir(pedido.getItenspedido().get(cont));
+                cont++;
+            } */      
+            
         } catch (SQLException ex) {
              System.out.println(ex.toString());   
         }

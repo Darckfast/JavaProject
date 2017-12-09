@@ -492,6 +492,7 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
             //System.out.println(pedido.getNumero() + pedido.getDataEmissaoPedido());
             if(daoPedido.consultar(Integer.valueOf(txtNumPedido.getText())) != null){
                 pedido = daoPedido.consultar(Integer.valueOf(txtNumPedido.getText()));
+                txtDataPedido.setText(pedido.getDataEmissaoPedido());
                 txtCPFCliente.setText(pedido.getCliente().getCpf());
                 btnConsultaClienteActionPerformed(evt);
                 txtCPFVendedor.setText(pedido.getVendedor().getCpf());
@@ -517,6 +518,7 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
                 setEnableDadosClienteVendedor(true);
                 setEnableItensPedido(true);
                 btnIncluirPedido.setEnabled(true);
+                txtDataPedido.setEnabled(true);
             }
         }catch(NumberFormatException e) {
            JOptionPane.showMessageDialog(null, "Código Inválido.");
@@ -527,6 +529,7 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
         String cpf = (txtCPFCliente.getText().replace("-","").replace(".",""));
         if((daoCliente.consultar(cpf)) != null){
             cliente = daoCliente.consultar(cpf);
+            //cliente.addCliente(pedido);
             txtCliente.setText(cliente.getNome());
         }else{
             JOptionPane.showMessageDialog(this,"Cliente não cadastrado!","Dado Inválido",JOptionPane.WARNING_MESSAGE);
@@ -537,6 +540,7 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
         String cpf = (txtCPFVendedor.getText().replace("-","").replace(".",""));
         if((daoVendedor.consultar(cpf)) != null){
             vendedor = daoVendedor.consultar(cpf);
+            //vendedor.addPedido(pedido);
             txtVendedor.setText(vendedor.getNome());
         }else{
             JOptionPane.showMessageDialog(this,"Vendedor não cadastrado!","Dado Inválido",JOptionPane.WARNING_MESSAGE);
@@ -605,8 +609,21 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRemProdutoActionPerformed
 
     private void btnIncluirPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirPedidoActionPerformed
-        
-        
+        if(cliente.getLimiteDisp() - Double.valueOf(txtValorTotal.getText()) <= 0){
+             JOptionPane.showMessageDialog(null, "Limite de credito insuficiente");
+        }else{
+            
+            //pedido.setItenspedido(itenspedido);
+//            String dataP = txtDataPedido.getText();
+//            dataP = dataP.replace("/","");
+//            //cliente.addCliente(pedido);
+//            
+            //pedido.setDataPgto(null);
+            //cliente.addCliente(pedido);
+            //vendedor.addPedido(pedido);
+            
+            daoPedido.inserir(instanciaPedido(pedido));
+        }
     }//GEN-LAST:event_btnIncluirPedidoActionPerformed
 
     private void btnAlterarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarPedidoActionPerformed
@@ -715,7 +732,16 @@ public class GUIEmitirPedido extends javax.swing.JFrame {
         txtValorTotal.setEnabled(b);        
     }
     
-    
+    private Pedido instanciaPedido (Pedido p){
+       p = new Pedido(Integer.valueOf(txtNumPedido.getText()), txtDataPedido.getText());
+       p.setCliente(cliente);
+       p.setVendedor(vendedor);
+       p.setDataPgto(null);
+       p.setStatus(true);
+       p.setDataPgto(null);
+       p.setStatus(true);
+       return(p);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddProduto;
     private javax.swing.JButton btnAlterarPedido;
