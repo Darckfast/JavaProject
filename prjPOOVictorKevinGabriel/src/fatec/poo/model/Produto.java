@@ -48,10 +48,10 @@ public class Produto {
     }
 
     public void tiraEstoque(int qtVendida){
-        qtdeDisponivel = qtdeDisponivel - qtVendida;
+        this.qtdeDisponivel = qtdeDisponivel - qtVendida;
     }
     
     public void poeEstoque(int qtVendida){
-        qtdeDisponivel = qtdeDisponivel + qtVendida;
+        this.qtdeDisponivel = qtdeDisponivel + qtVendida;
     }
 }

@@ -74,15 +74,15 @@ public class DaoCliente {
             ps.setString(1, cpf);
             ResultSet rs = ps.executeQuery();
             if (rs.next() == true) {
-            d = new Cliente (cpf, rs.getString("nome"), rs.getDouble("limiteCred"));
-            d.setCep(rs.getString("cep"));
-            d.setCidade(rs.getString("cidade"));
-            d.setDdd(rs.getString("ddd"));
-            d.setEndereco(rs.getString("endereco"));
-            d.setTelefone(rs.getString("telefone"));
-            d.setLimiteDisp(rs.getDouble("limitedisp"));
-            d.setUf(rs.getString("uf"));
-            d.setLimiteCredAntigo(rs.getDouble("limiteCred"));
+                d = new Cliente (cpf, rs.getString("nome"), rs.getDouble("limiteCred"));
+                d.setCep(rs.getString("cep"));
+                d.setCidade(rs.getString("cidade"));
+                d.setDdd(rs.getString("ddd"));
+                d.setEndereco(rs.getString("endereco"));
+                d.setTelefone(rs.getString("telefone"));
+                d.setLimiteDisp(rs.getDouble("limitedisp"));
+                d.setUf(rs.getString("uf"));
+                d.setLimiteCredAntigo(rs.getDouble("limiteCred"));
             }
         }
         catch (SQLException ex) { 

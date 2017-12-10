@@ -20,7 +20,7 @@ public class DaoItemPedido {
         PreparedStatement ps = null;
         try {
             ps = conn.prepareStatement("INSERT INTO ITEMPEDIDO" +
-                                                   "(numeroItem, codigo, qtdeVendida)" + 
+                                                   "(NUMEROPEDIDO, CODIGOPRODUTO, QTDEVENDA)" + 
                                                    "VALUES(?,?,?)");
             ps.setInt(1,itempedido.getNumeroItem());
             ps.setInt(2,itempedido.getProduto().getCodigo());
@@ -35,33 +35,31 @@ public class DaoItemPedido {
     public void alterar(ItemPedido itempedido) {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("UPDATE ITEMPEDIDO" + "SET qtdeVendida = ?," +
-                                                              "codigo = ?" +
-                                                              "where numeroItem = ?");
+            ps = conn.prepareStatement("UPDATE ITEMPEDIDO SET qtdeVenda = ? where NUMEROPEDIDO = ? AND CODIGOPRODUTO = ?");
             
             ps.setInt(1, itempedido.getQtdeVendida());
-            ps.setInt(2, itempedido.getProduto().getCodigo());
-            ps.setInt(3, itempedido.getNumeroItem());
-                
+            ps.setInt(2, itempedido.getNumeroItem());
+            ps.setInt(3, itempedido.getProduto().getCodigo());
             ps.execute();
         } catch (SQLException ex) {
              System.out.println(ex.toString());   
         }
     }
         
-     public  ItemPedido consultar (int numeroItem) {
+     public  ItemPedido consultar (int NUMEROPEDIDO) {
         ItemPedido d = null;
        
         PreparedStatement ps = null;
         try {
             ps = conn.prepareStatement("SELECT * from ITEMPEDIDO where " +
-                                                 "numeroItem = ?");
+                                                 "NUMEROPEDIDO = ?");
             
-            ps.setInt(1, numeroItem);
+            ps.setInt(1, NUMEROPEDIDO);
             ResultSet rs = ps.executeQuery();
            
             if (rs.next() == true) {
-                d = new ItemPedido (numeroItem, rs.getInt("qtdeVendida"));
+                d = new ItemPedido (NUMEROPEDIDO, rs.getInt("qtdeVendida"));
+                
             }
         }
         catch (SQLException ex) { 
@@ -107,6 +105,7 @@ public class DaoItemPedido {
            
             while (rs.next() == true) {
                 i = new ItemPedido (numeroPedido, rs.getInt("QTDEVENDA"));
+                i.setQtdeAntiga(rs.getInt("QTDEVENDA"));
                 i.setProduto(new DaoProduto(conn).consultar(rs.getInt("CODIGOPRODUTO")));
                 d.add(i);
             }
@@ -117,13 +116,25 @@ public class DaoItemPedido {
         return (d);
     }    
       
-      
-     public void excluir(ItemPedido itempedido) {
+     public void excluirItem(ItemPedido itempedido) {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("DELETE FROM ITEMPEDIDO where numeroItem = ?");
+            ps = conn.prepareStatement("DELETE FROM ITEMPEDIDO where NUMEROPEDIDO = ? AND CODIGOPRODUTO = ?");
             
             ps.setInt(1, itempedido.getNumeroItem());
+            ps.setInt(2, itempedido.getProduto().getCodigo());
+                      
+            ps.execute();
+        } catch (SQLException ex) {
+             System.out.println(ex.toString());   
+        }
+    } 
+     public void excluir(int itempedido) {
+        PreparedStatement ps = null;
+        try {
+            ps = conn.prepareStatement("DELETE FROM ITEMPEDIDO where NUMEROPEDIDO = ?");
+            
+            ps.setInt(1, itempedido);
                       
             ps.execute();
         } catch (SQLException ex) {

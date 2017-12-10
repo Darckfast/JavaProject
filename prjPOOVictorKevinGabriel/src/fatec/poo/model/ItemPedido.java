@@ -9,6 +9,15 @@ public class ItemPedido {
     private int qtdeVendida;
     private Produto produto;
     private Pedido pedido;
+    private int qtdeAntiga;
+
+    public int getQtdeAntiga() {
+        return qtdeAntiga;
+    }
+
+    public void setQtdeAntiga(int qtdeAntiga) {
+        this.qtdeAntiga = qtdeAntiga;
+    }
 
     public ItemPedido(int numeroItem, int qtdeVendida) {
         this.numeroItem = numeroItem;

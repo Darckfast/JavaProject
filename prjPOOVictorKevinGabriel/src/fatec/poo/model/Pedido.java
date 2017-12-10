@@ -13,11 +13,21 @@ public class Pedido {
     private boolean status;
     private Cliente cliente;
     private Vendedor vendedor;
+    String teste;
     private ArrayList<ItemPedido> itenspedido;
+
+    public String getTeste() {
+        return teste;
+    }
+
+    public void setTeste(String teste) {
+        this.teste = teste;
+    }
 
     public Pedido(int numero, String dataEmissaoPedido) {
         this.numero = numero;
         this.dataEmissaoPedido = dataEmissaoPedido;
+        itenspedido = new ArrayList<>();
     }
 
     public String getDataPgto() {
@@ -72,6 +82,10 @@ public class Pedido {
     public ArrayList<ItemPedido> getItenspedido() {
         return itenspedido;
     }
-    
+     public void removerItemPedido (Integer a ){
+        double l;
+        
+        itenspedido.remove(itenspedido.get(a));
+    }
     
 }

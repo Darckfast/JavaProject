@@ -195,8 +195,10 @@ public class GUIProduto extends javax.swing.JFrame {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         conexao = new Conexao("BD1611017","BD1611017");
+        //conexao = new Conexao("C##admin","admin");
         conexao.setDriver("oracle.jdbc.driver.OracleDriver");
         conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
+        //conexao.setConnectionString("jdbc:oracle:thin:@localhost:1521:orcl");
         daoProduto = new DaoProduto(conexao.conectar());
     }//GEN-LAST:event_formWindowOpened
 

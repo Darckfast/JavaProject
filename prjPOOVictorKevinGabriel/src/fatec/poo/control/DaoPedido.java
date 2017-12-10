@@ -26,7 +26,7 @@ public class DaoPedido {
         DaoItemPedido daoItemPedido = new DaoItemPedido(conn);
         PreparedStatement ps = null;
         try {
-            /*for(ItemPedido ip : pedido.getItenspedido()){
+            for(ItemPedido ip : pedido.getItenspedido()){
                 ps = conn.prepareStatement("UPDATE PRODUTO set QTDEDISPONIVEL = QTDEDISPONIVEL - ? WHERE CODIGO = ?");
                 ps.setInt(1, ip.getQtdeVendida());
                 ps.setInt(2, ip.getProduto().getCodigo());   
@@ -36,11 +36,12 @@ public class DaoPedido {
                 ps.setInt(1, ip.getQtdeVendida());
                 ps.setDouble(2, ip.getProduto().getPrecoUnit());
                 ps.setString(3, ip.getPedido().getCliente().getCpf());
-
-            }*/
+                
+                ps.execute();
+            }
             
             ps = conn.prepareStatement("INSERT INTO PEDIDO" + 
-                                                        "(numero, TO_DATE(dataEmissaoPedido,'DD-MM-YYY'),dataPgto,status,cpfcliente,cpfvendedor)" + 
+                                                        "(numero,dataEmissaoPedido,datapagto,status,cpfcliente,cpfvendedor)" + 
                                                         "VALUES(?,?,?,?,?,?)");
             ps.setInt(1, pedido.getNumero());
             ps.setString(2, pedido.getDataEmissaoPedido());
@@ -48,13 +49,14 @@ public class DaoPedido {
             ps.setBoolean(4, pedido.getStatus());
             ps.setString(5, pedido.getCliente().getCpf());
             ps.setString(6, pedido.getVendedor().getCpf());
+            
             ps.execute();
             Integer cont = 0;
             
-            /*while (cont < pedido.getItenspedido().size()) {
+            while (cont < pedido.getItenspedido().size()) {
                 daoItemPedido.inserir(pedido.getItenspedido().get(cont));
                 cont++;
-            } */      
+            }     
             
         } catch (SQLException ex) {
              System.out.println(ex.toString());   
@@ -62,50 +64,75 @@ public class DaoPedido {
     }
     
     public void alterar(Pedido pedido) {
+        DaoItemPedido daoItemPedido = new DaoItemPedido(conn);
+        
         PreparedStatement ps = null;
+        PreparedStatement pb = null;
+        PreparedStatement pp = null;
+        boolean f1 = false, f2 = false;
         try {
-            ps = conn.prepareStatement("UPDATE PEDIDO" +
-                                                            "SET qtdeVendidadataEmissaoPedido = ?," + 
-                                                            "dataPgto = ?," + 
-                                                            "status = ?," + 
-                                                            "cliente = ?," + 
-                                                            "vendedor = ?" +
-                                                 "where numero = ?");
-            
-            ps.setString(1, pedido.getDataEmissaoPedido());
-            ps.setString(2, pedido.getDataPgto());
-            ps.setBoolean(3, pedido.getStatus());
-            ps.setString(4, pedido.getCliente().getCpf());
-            ps.setString(5, pedido.getVendedor().getCpf());
-            ps.setInt(6, pedido.getNumero());
+               for(ItemPedido ip : pedido.getItenspedido()){
+                /*ps = conn.prepareStatement("UPDATE PRODUTO set QTDEDISPONIVEL = ? WHERE CODIGO = ?");
+                ps.setInt(1, ip.getProduto().getQtdeDisponivel());
+                ps.setInt(2, ip.getProduto().getCodigo());   
+                ps.executeQuery();*/
+                
+                ps = conn.prepareStatement("UPDATE CLIENTE set LIMITEDISP = LIMITEDISP + ? * ? WHERE CPF = ?");
+                ps.setInt(1, ip.getQtdeAntiga());
+                ps.setDouble(2, ip.getProduto().getPrecoUnit());
+                ps.setString(3, pedido.getCliente().getCpf());
+                ps.executeQuery();
 
-            ps.execute();
+               }
+               ps = null;
+               daoItemPedido.excluir(pedido.getNumero());
+               Integer cont = 0;
+               while (cont < pedido.getItenspedido().size()) {   
+                    daoItemPedido.inserir(pedido.getItenspedido().get(cont));
+                    cont++;
+                }
+               for(ItemPedido ip : pedido.getItenspedido()){
+                ps = conn.prepareStatement("UPDATE PRODUTO set QTDEDISPONIVEL = QTDEDISPONIVEL - ? WHERE CODIGO = ?");
+                ps.setInt(1, ip.getQtdeVendida());
+                ps.setInt(2, ip.getProduto().getCodigo());   
+                ps.execute();
+                
+                ps = conn.prepareStatement("UPDATE CLIENTE set LIMITEDISP = LIMITEDISP - ? * ? WHERE CPF = ?");
+                ps.setInt(1, ip.getQtdeVendida());
+                ps.setDouble(2, ip.getProduto().getPrecoUnit());
+                ps.setString(3, pedido.getCliente().getCpf());
+                
+                ps.execute();
+            }
+               //ps.execute();
         } catch (SQLException ex) {
              System.out.println(ex.toString());   
         }
-    }
+}
         
      public  Pedido consultar (int numero) {
-        //Pedido d = new Pedido(numero,"11/11/1111");
         Pedido d = null;
-       
+        DaoCliente daoCliente = new DaoCliente(conn);
+        
         PreparedStatement ps = null;
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         try {
-            ps = conn.prepareStatement("SELECT * from PEDIDO where " +
-                                                 "numero = ?");
+            ps = conn.prepareStatement("SELECT NUMERO,TRUNC(DATAEMISSAOPEDIDO), DATAPAGTO, STATUS, CPFCLIENTE, CPFVENDEDOR from PEDIDO where NUMERO = ?");
             
-            ps.setInt(1, numero);
+           ps.setInt(1, numero);
             ResultSet rs = ps.executeQuery();
            
             if (rs.next() == true) {
-                d = new Pedido (numero, rs.getString("DATAEMISSAOPEDIDO"));
-                d.setDataPgto(rs.getString("DATAPGTO"));
-                d.setStatus(rs.getBoolean("STATUS"));
-                d.setCliente(new DaoCliente(conn).consultar(rs.getString("CPFCLIENTE")));
+                d = new Pedido (numero, rs.getString("TRUNC(DATAEMISSAOPEDIDO)"));
+                d.setDataPgto(rs.getString("DATAPAGTO"));
+                //d.setStatus(rs.getBoolean("STATUS"));
+                if(rs.getInt("STATUS") == 1){
+                    d.setStatus(true);
+                }else{
+                    d.setStatus(false);
+                }
+                d.setCliente(daoCliente.consultar(rs.getString("CPFCLIENTE")));
                 d.setVendedor(new DaoVendedor(conn).consultar(rs.getString("CPFVENDEDOR")));
                 d.setItenspedido(new DaoItemPedido(conn).consultarPedido(numero));
-                //TODO: adicionar arraylist.
             }
         }
         catch (SQLException ex) { 
@@ -118,17 +145,21 @@ public class DaoPedido {
         PreparedStatement ps = null;
         try {
             for(ItemPedido ip : pedido.getItenspedido()){
-                ps = conn.prepareStatement("UPDATE PRODUTO set QTDEDISPONIVEL = QTDEDISPONIVEL + ? WHERE CODIGO = ?");
-                ps.setInt(1, ip.getQtdeVendida());
+                ps = conn.prepareStatement("UPDATE PRODUTO set QTDEDISPONIVEL = ? WHERE CODIGO = ?");
+                ps.setInt(1, ip.getProduto().getQtdeDisponivel());
                 ps.setInt(2, ip.getProduto().getCodigo());   
                 ps.execute();
                 
                 ps = conn.prepareStatement("UPDATE CLIENTE set LIMITEDISP = LIMITEDISP + ? * ? WHERE CPF = ?");
                 ps.setInt(1, ip.getQtdeVendida());
                 ps.setDouble(2, ip.getProduto().getPrecoUnit());
-                ps.setString(3, ip.getPedido().getCliente().getCpf());
+                ps.setString(3, pedido.getCliente().getCpf());
 
             }
+            
+            ps = conn.prepareStatement("DELETE FROM ITEMPEDIDO where numeropedido = ?");
+            ps.setInt(1, pedido.getNumero());
+            ps.execute();
             
             ps = conn.prepareStatement("DELETE FROM PEDIDO where numero = ?");
             ps.setInt(1, pedido.getNumero());
